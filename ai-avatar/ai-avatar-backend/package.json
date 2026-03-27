@@ -1,0 +1,30 @@
+{
+  "name": "r3f-virtual-girlfriend-backend",
+  "version": "1.0.0",
+  "description": "Backend for the virtual girlfriend app",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js --ext js"
+  },
+  "author": "Wawa SENSEI <contact@wawasensei.dev>",
+  "dependencies": {
+    "@andresaya/edge-tts": "^1.8.0",
+    "@google-cloud/vertexai": "^1.9.0",
+    "@google/generative-ai": "^0.24.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "edge-tts-node": "^1.5.7",
+    "elevenlabs-node": "^1.2.0",
+    "express": "^4.18.2",
+    "ffmpeg-static": "^5.3.0",
+    "fluent-ffmpeg": "^2.1.3",
+    "gtts": "^0.2.1",
+    "msedge-tts": "^1.3.4",
+    "openai": "^4.26.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}

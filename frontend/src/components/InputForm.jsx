@@ -1,4 +1,3 @@
-// TODO: Add component logic
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -82,7 +81,7 @@ export function InputForm({ setText, setTextGemma }) {
     setLoading(true);
     const res = await axios.post('/api/generate-text', {
       ...data,
-      email: user?.primaryEmailAddress?.emailAddress, // 👈 add this
+      email: user?.primaryEmailAddress?.emailAddress,
     });
     
     if (res.data.gemini_response && res.data.gemma_response) {
@@ -121,7 +120,7 @@ export function InputForm({ setText, setTextGemma }) {
               <FormLabel className="text-base font-semibold">Preferred Contact Method</FormLabel>
               <div className="grid grid-cols-2 gap-4 mt-2">
                 {contactMethods.map((method) => (
-                  <div key={method} className="flex items-center space-x-2 border p-3 rounded-lg hover:bg-slate-50">
+                  <div key={method} className="flex items-center space-x-2 border dark:border-slate-800 p-3 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
                     <Checkbox
                       checked={field.value.includes(method)}
                       onCheckedChange={(checked) => {
@@ -132,7 +131,7 @@ export function InputForm({ setText, setTextGemma }) {
                         setSelectedContactMethods(newValue);
                       }}
                     />
-                    <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                    <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 dark:text-slate-200">
                       {method}
                     </label>
                   </div>
@@ -159,11 +158,12 @@ export function InputForm({ setText, setTextGemma }) {
           />
         )}
 
-        <div className="p-4 bg-slate-50 rounded-xl border-2 border-dashed border-slate-200">
+        {/* Updated Location Security Box */}
+        <div className="p-4 bg-slate-50 dark:bg-slate-900/50 rounded-xl border-2 border-dashed border-slate-200 dark:border-slate-700">
           <FormLabel>Location Security</FormLabel>
           <div className="flex items-center gap-4 mt-2">
             <Input
-              className="bg-white"
+              className="bg-white dark:bg-slate-950 dark:border-slate-800"
               value={form.watch('location.lat') !== 0 ? `Lat: ${form.watch('location.lat').toFixed(4)}, Lng: ${form.watch('location.lng').toFixed(4)}` : "No location set"}
               readOnly
             />
@@ -171,7 +171,7 @@ export function InputForm({ setText, setTextGemma }) {
               type="button"
               onClick={getUserLocation}
               variant="outline"
-              className="shrink-0 gap-2 border-pink-200 text-pink-700 hover:bg-pink-50"
+              className="shrink-0 gap-2 border-pink-200 text-pink-700 hover:bg-pink-50 dark:border-pink-900/50 dark:text-pink-400 dark:hover:bg-pink-950/30"
             >
               <LocateIcon className="h-4 w-4" />
               Detect
@@ -184,7 +184,7 @@ export function InputForm({ setText, setTextGemma }) {
           name="occurrenceDuration"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Duration of Incidents: <span className="text-pink-600 font-bold">{field.value} months</span></FormLabel>
+              <FormLabel>Duration of Incidents: <span className="text-pink-600 dark:text-pink-500 font-bold">{field.value} months</span></FormLabel>
               <FormControl>
                 <Slider
                   value={[parseInt(field.value)]}
@@ -207,7 +207,7 @@ export function InputForm({ setText, setTextGemma }) {
               <FormControl>
                 <Textarea 
                   placeholder="Tell us what is happening..." 
-                  className="min-h-[100px]"
+                  className="min-h-[100px] dark:bg-slate-950 dark:border-slate-800"
                   {...field} 
                 />
               </FormControl>
@@ -225,7 +225,7 @@ export function InputForm({ setText, setTextGemma }) {
               <FormControl>
                 <Textarea 
                   placeholder="Description of the person involved..." 
-                  className="min-h-[100px]"
+                  className="min-h-[100px] dark:bg-slate-950 dark:border-slate-800"
                   {...field} 
                 />
               </FormControl>
@@ -237,7 +237,7 @@ export function InputForm({ setText, setTextGemma }) {
         <Button
           type="submit"
           disabled={loading}
-          className="w-full bg-pink-600 hover:bg-pink-700 text-white h-12 text-lg font-bold transition-all"
+          className="w-full bg-pink-600 hover:bg-pink-700 dark:bg-pink-700 dark:hover:bg-pink-600 text-white h-12 text-lg font-bold transition-all"
         >
           {loading ? (
             <><Loader2 className="mr-2 h-5 w-5 animate-spin" /> Generating AI Summary...</>

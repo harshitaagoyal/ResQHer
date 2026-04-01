@@ -1,11 +1,11 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
-import { createPortal } from 'react-dom'; // 🚨 NEW: Imported createPortal
+import { createPortal } from 'react-dom';
 import { PhoneOutgoing, PhoneOff, Phone, Timer, X } from 'lucide-react';
 
 export default function FakeCall() {
-  const [mounted, setMounted] = useState(false); // 🚨 NEW: To prevent hydration errors
+  const [mounted, setMounted] = useState(false);
   const [fakeCallStatus, setFakeCallStatus] = useState('idle'); 
   const [callerName, setCallerName] = useState('Dad');
   
@@ -14,7 +14,6 @@ export default function FakeCall() {
   
   const timerRef = useRef(null);
 
-  // 🚨 NEW: Wait for component to mount before using Portal
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -45,7 +44,7 @@ export default function FakeCall() {
       {fakeCallStatus === 'counting' ? (
         <button 
           onClick={cancelFakeCall}
-          className="flex items-center gap-1.5 p-1.5 sm:px-3 sm:py-1.5 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-all font-bold text-sm sm:text-base animate-pulse"
+          className="cursor-pointer flex items-center gap-1.5 p-1.5 sm:px-3 sm:py-1.5 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-all font-bold text-sm sm:text-base animate-pulse"
         >
           <Timer size={18} />
           <span className="hidden lg:block text-red-500">Cancel Timer</span>
@@ -54,7 +53,7 @@ export default function FakeCall() {
         <button 
           onClick={openFakeCallMenu}
           disabled={fakeCallStatus !== 'idle'}
-          className="flex items-center gap-1.5 p-1.5 sm:px-3 sm:py-1.5 text-pink-600 hover:bg-pink-50 dark:hover:bg-pink-900/20 rounded-lg transition-all font-bold text-sm sm:text-base disabled:opacity-50"
+          className="cursor-pointer disabled:cursor-not-allowed flex items-center gap-1.5 p-1.5 sm:px-3 sm:py-1.5 text-pink-600 hover:bg-pink-50 dark:hover:bg-pink-900/20 rounded-lg transition-all font-bold text-sm sm:text-base disabled:opacity-50"
         >
           <PhoneOutgoing size={18} />
           <span className="hidden lg:block">Fake Call</span>
@@ -71,7 +70,7 @@ export default function FakeCall() {
                   <h3 className="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
                     <PhoneOutgoing className="text-pink-600" /> Fake Call Setup
                   </h3>
-                  <button onClick={closeFakeCallMenu} className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+                  <button onClick={closeFakeCallMenu} className="cursor-pointer text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
                     <X size={20} />
                   </button>
                 </div>
@@ -91,7 +90,7 @@ export default function FakeCall() {
                   <div className="pt-2">
                     <button 
                       onClick={() => startFakeCall(3)} 
-                      className="w-full bg-pink-600 hover:bg-pink-700 text-white font-bold py-3 rounded-xl transition-colors shadow-md mb-3"
+                      className="cursor-pointer w-full bg-pink-600 hover:bg-pink-700 text-white font-bold py-3 rounded-xl transition-colors shadow-md mb-3"
                     >
                       Call Right Now (3s)
                     </button>
@@ -103,9 +102,9 @@ export default function FakeCall() {
                     </div>
 
                     <div className="grid grid-cols-3 gap-2 mt-3">
-                      <button onClick={() => startFakeCall(10)} className="bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-semibold py-2 rounded-lg transition-colors text-sm">10 Sec</button>
-                      <button onClick={() => startFakeCall(60)} className="bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-semibold py-2 rounded-lg transition-colors text-sm">1 Min</button>
-                      <button onClick={() => startFakeCall(300)} className="bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-semibold py-2 rounded-lg transition-colors text-sm">5 Min</button>
+                      <button onClick={() => startFakeCall(10)} className="cursor-pointer bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-semibold py-2 rounded-lg transition-colors text-sm">10 Sec</button>
+                      <button onClick={() => startFakeCall(60)} className="cursor-pointer bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-semibold py-2 rounded-lg transition-colors text-sm">1 Min</button>
+                      <button onClick={() => startFakeCall(300)} className="cursor-pointer bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-semibold py-2 rounded-lg transition-colors text-sm">5 Min</button>
                     </div>
 
                     <div className="mt-3 flex gap-2">
@@ -120,7 +119,7 @@ export default function FakeCall() {
                       <select
                         value={customUnit}
                         onChange={(e) => setCustomUnit(e.target.value)}
-                        className="px-2 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 dark:text-white focus:ring-2 focus:ring-pink-500 outline-none text-sm cursor-pointer"
+                        className="cursor-pointer px-2 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 dark:text-white focus:ring-2 focus:ring-pink-500 outline-none text-sm"
                       >
                         <option value="sec">Sec</option>
                         <option value="min">Min</option>
@@ -138,7 +137,7 @@ export default function FakeCall() {
                           }
                         }}
                         disabled={!customTime || customTime <= 0}
-                        className="bg-slate-800 hover:bg-slate-900 dark:bg-slate-700 dark:hover:bg-slate-600 text-white px-4 py-2 rounded-lg font-bold transition-colors text-sm disabled:opacity-50"
+                        className="cursor-pointer disabled:cursor-not-allowed bg-slate-800 hover:bg-slate-900 dark:bg-slate-700 dark:hover:bg-slate-600 text-white px-4 py-2 rounded-lg font-bold transition-colors text-sm disabled:opacity-50"
                       >
                         Set
                       </button>
@@ -163,13 +162,13 @@ export default function FakeCall() {
               <div className="flex w-full max-w-sm justify-between pb-12">
                 {fakeCallStatus === 'ringing' ? (
                   <>
-                    <button onClick={handleEndCall} className="flex flex-col items-center gap-3 group">
+                    <button onClick={handleEndCall} className="cursor-pointer flex flex-col items-center gap-3 group">
                       <div className="w-20 h-20 rounded-full bg-red-500 flex items-center justify-center shadow-[0_0_20px_rgba(239,68,68,0.4)] group-hover:scale-105 transition-transform">
                         <PhoneOff size={36} className="text-white fill-current" />
                       </div>
                       <span className="text-lg">Decline</span>
                     </button>
-                    <button onClick={handleAcceptCall} className="flex flex-col items-center gap-3 group">
+                    <button onClick={handleAcceptCall} className="cursor-pointer flex flex-col items-center gap-3 group">
                       <div className="w-20 h-20 rounded-full bg-green-500 flex items-center justify-center shadow-[0_0_20px_rgba(34,197,94,0.4)] animate-bounce group-hover:scale-105 transition-transform">
                         <Phone size={36} className="text-white fill-current" />
                       </div>
@@ -178,7 +177,7 @@ export default function FakeCall() {
                   </>
                 ) : (
                   <div className="w-full flex justify-center">
-                    <button onClick={handleEndCall} className="flex flex-col items-center gap-3 group">
+                    <button onClick={handleEndCall} className="cursor-pointer flex flex-col items-center gap-3 group">
                       <div className="w-20 h-20 rounded-full bg-red-500 flex items-center justify-center shadow-[0_0_20px_rgba(239,68,68,0.4)] group-hover:scale-105 transition-transform">
                         <PhoneOff size={36} className="text-white fill-current" />
                       </div>

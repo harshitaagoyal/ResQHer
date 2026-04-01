@@ -28,12 +28,12 @@ export default function Navbar() {
             {/* Left Side: Hamburger Menu & Logo */}
             <div className="flex items-center gap-3">
               <button 
-                onClick={() => setIsSidebarOpen(true)}
-                className="p-1.5 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
-                title="Open Menu"
-              >
-                <Menu size={24} />
-              </button>
+  onClick={() => setIsSidebarOpen(true)}
+  className="cursor-pointer p-1.5 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
+  title="Open Menu"
+>
+  <Menu size={24} />
+</button>
               
               <Link href="/" className="flex items-center gap-1">
                 <span className="text-xl sm:text-2xl font-black tracking-tight text-slate-900 dark:text-white">
@@ -52,10 +52,14 @@ export default function Navbar() {
               </Link>
 
               {/* 2. Fake Call Module */}
-              <FakeCall />
+              <div className="cursor-pointer">
+                <FakeCall />
+              </div>
 
               {/* 3. Alert Contacts Module */}
-              <AlertButton />
+              <div className="cursor-pointer">
+                <AlertButton />
+              </div>
 
               {/* 4. SOS 112 */}
               <a 
@@ -69,13 +73,13 @@ export default function Navbar() {
 
               {/* 5. Quick Exit */}
               <button 
-                onClick={handleQuickExit}
-                className="flex items-center gap-1.5 p-1.5 sm:px-3 sm:py-1.5 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-all font-bold text-sm sm:text-base ml-1 sm:ml-2"
-                title="Quick Exit to Google"
-              >
-                <span className="hidden sm:block">Quick Exit</span>
-                <X size={18} strokeWidth={2.5} />
-              </button>
+  onClick={handleQuickExit}
+  className="cursor-pointer flex items-center gap-1.5 p-1.5 sm:px-3 sm:py-1.5 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-all font-bold text-sm sm:text-base ml-1 sm:ml-2"
+  title="Quick Exit to Google"
+>
+  <span className="hidden sm:block">Quick Exit</span>
+  <X size={18} strokeWidth={2.5} />
+</button>
 
               {/* 6. Theme Toggle Module */}
               <ThemeToggle />

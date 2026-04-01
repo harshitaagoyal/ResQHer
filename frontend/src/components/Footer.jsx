@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react'; // Added useState
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { 
   Globe, 
@@ -11,20 +11,30 @@ import {
   Phone, 
   MapPin, 
   Heart,
-  Check // Added Check icon for the success state
+  Check,
+  Copy
 } from 'lucide-react';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
   const [copied, setCopied] = useState(false);
+  const [emailCopied, setEmailCopied] = useState(false);
 
   const handleShare = () => {
-    // Copies the current website URL to clipboard
     const url = window.location.href;
     navigator.clipboard.writeText(url).then(() => {
       setCopied(true);
-      // Reset the "Copied" message after 2 seconds
       setTimeout(() => setCopied(false), 2000);
+    });
+  };
+
+  // Separate function ONLY for copying — no interference with the mailto link
+  const handleCopyEmail = (e) => {
+    e.preventDefault(); // Prevent the <a> from firing when clicking the copy button
+    e.stopPropagation();
+    navigator.clipboard.writeText('resqher80@gmail.com').then(() => {
+      setEmailCopied(true);
+      setTimeout(() => setEmailCopied(false), 2000);
     });
   };
 
@@ -53,36 +63,33 @@ export default function Footer() {
                 <Users size={20} />
               </Link>
 
-              {/* Share Button with Clipboard Logic */}
               <div className="relative">
-                <button 
-                  onClick={handleShare}
-                  className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-900 text-slate-400 hover:text-[#ed0b70] hover:bg-pink-50 transition-all border border-slate-100 dark:border-slate-800 flex items-center justify-center"
-                >
-                  {copied ? <Check size={20} className="text-green-500" /> : <Share2 size={20} />}
-                </button>
-                
-                {/* Tooltip message */}
-                {copied && (
-                  <span className="absolute -top-10 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-[10px] font-black px-2 py-1 rounded uppercase tracking-widest animate-bounce">
-                    Copied!
-                  </span>
-                )}
-              </div>
+  <button 
+    type="button"
+    onClick={handleShare}
+    className="cursor-pointer p-2.5 rounded-xl bg-slate-50 dark:bg-slate-900 text-slate-400 hover:text-[#ed0b70] hover:bg-pink-50 transition-all border border-slate-100 dark:border-slate-800 flex items-center justify-center"
+  >
+    {copied ? <Check size={20} className="text-green-500" /> : <Share2 size={20} />}
+  </button>
+  
+  {copied && (
+    <span className="absolute -top-10 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-[10px] font-black px-2 py-1 rounded uppercase tracking-widest animate-bounce">
+      Copied!
+    </span>
+  )}
+</div>
             </div>
           </div>
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-lg font-black text-slate-900 dark:text-white mb-6 uppercase tracking-wider">Platform</h4>
+            <h4 className="text-lg font-black text-slate-900 mb-6 uppercase tracking-wider">Platform</h4>
             <ul className="space-y-4">
-              {['Safety Features', 'Law Bot', 'Therapy Bot', 'Trust Circle', 'Fake Call'].map((item) => (
-                <li key={item}>
-                  <Link href="/about" className="text-slate-500 dark:text-slate-400 font-bold hover:text-[#ed0b70] transition-colors">
-                    {item}
-                  </Link>
-                </li>
-              ))}
+              <li><Link href="/create-post" className="text-slate-500 font-bold hover:text-[#ed0b70]">Report Now</Link></li>
+              <li><Link href="/lawbot" className="text-slate-500 font-bold hover:text-[#ed0b70]">Law Bot</Link></li>
+              <li><Link href="/therapybot" className="text-slate-500 font-bold hover:text-[#ed0b70]">Therapy Bot</Link></li>
+              <li><Link href="/emergency-contacts" className="text-slate-500 font-bold hover:text-[#ed0b70]">Trust Circle</Link></li>
+              <li><Link href="/nearby-help" className="text-slate-500 font-bold hover:text-[#ed0b70]">Nearby Help</Link></li>
             </ul>
           </div>
 
@@ -90,8 +97,8 @@ export default function Footer() {
           <div>
             <h4 className="text-lg font-black text-slate-900 mb-6 uppercase tracking-wider">Resources</h4>
             <ul className="space-y-4">
-              <li><Link href="/about" className="text-slate-500 font-bold hover:text-[#ed0b70]">About Us</Link></li>
-              <li><Link href="/blog" className="text-slate-500 font-bold hover:text-[#ed0b70]">Safety Blog</Link></li>
+              <li><Link href="/about-us" className="text-slate-500 font-bold hover:text-[#ed0b70]">About Us</Link></li>
+              <li><Link href="/vision" className="text-slate-500 font-bold hover:text-[#ed0b70]">Our Vision</Link></li>
               <li><Link href="/privacy" className="text-slate-500 font-bold hover:text-[#ed0b70]">Privacy Policy</Link></li>
               <li><Link href="/terms" className="text-slate-500 font-bold hover:text-[#ed0b70]">Terms of Service</Link></li>
             </ul>
@@ -101,17 +108,52 @@ export default function Footer() {
           <div>
             <h4 className="text-lg font-black text-slate-900 dark:text-white mb-6 uppercase tracking-wider">Contact</h4>
             <ul className="space-y-4">
-              <li className="flex items-start gap-3 text-slate-500 dark:text-slate-400 font-bold">
-                <Mail size={20} className="text-[#ed0b70] mt-1 shrink-0" />
-                <span>resqher80@gmail.com</span>
+
+              {/* Email row: mailto link + separate copy button */}
+              <li className="flex items-center gap-2">
+                {/* This <a> has NO onClick — pure native mailto, always works */}
+                <a 
+                  href="https://mail.google.com/mail/?view=cm&to=resqher80@gmail.com"
+target="_blank"
+rel="noopener noreferrer"
+                  className="flex items-center gap-3 text-slate-500 dark:text-slate-400 font-bold hover:text-[#ed0b70] transition-colors group"
+                >
+                  <Mail size={20} className="text-[#ed0b70] shrink-0 group-hover:scale-110 transition-transform" />
+                  <span>resqher80@gmail.com</span>
+                </a>
+
+                {/* Separate copy button that doesn't interfere with mailto */}
+                <button
+                  onClick={handleCopyEmail}
+                  className="ml-1 p-1 rounded-md text-slate-400 hover:text-[#ed0b70] transition-colors shrink-0"
+                  title="Copy email"
+                >
+                  {emailCopied 
+                    ? <Check size={14} className="text-green-500" /> 
+                    : <Copy size={14} />
+                  }
+                </button>
               </li>
-              <li className="flex items-start gap-3 text-slate-500 dark:text-slate-400 font-bold">
-                <Phone size={20} className="text-[#ed0b70] mt-1 shrink-0" />
-                <span>+91 0000000000</span>
+
+              <li>
+                <a 
+                  href="tel:+910000000000" 
+                  className="flex items-start gap-3 text-slate-500 dark:text-slate-400 font-bold hover:text-[#ed0b70] transition-colors group"
+                >
+                  <Phone size={20} className="text-[#ed0b70] mt-1 shrink-0 group-hover:scale-110 transition-transform" />
+                  <span>+91 0000000000</span>
+                </a>
               </li>
-              <li className="flex items-start gap-3 text-slate-500 dark:text-slate-400 font-bold">
-                <MapPin size={20} className="text-[#ed0b70] mt-1 shrink-0" />
-                <span>Bangalore, India</span>
+              <li>
+                <a 
+                  href="https://www.google.com/maps?q=Bangalore,+India" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-start gap-3 text-slate-500 dark:text-slate-400 font-bold hover:text-[#ed0b70] transition-colors group"
+                >
+                  <MapPin size={20} className="text-[#ed0b70] mt-1 shrink-0 group-hover:scale-110 transition-transform" />
+                  <span>Bangalore, India</span>
+                </a>
               </li>
             </ul>
           </div>

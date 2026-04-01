@@ -57,7 +57,7 @@ export default function AlertButton() {
     <button 
       onClick={triggerAlert}
       disabled={isAlerting}
-      className="flex items-center gap-1.5 p-1.5 sm:px-3 sm:py-1.5 text-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 rounded-lg transition-all font-bold text-sm sm:text-base disabled:opacity-50"
+      className="cursor-pointer disabled:cursor-not-allowed flex items-center gap-1.5 p-1.5 sm:px-3 sm:py-1.5 text-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 rounded-lg transition-all font-bold text-sm sm:text-base disabled:opacity-50"
       title="Alert Trust Circle"
     >
       <Radio size={18} className={isAlerting ? 'animate-ping text-red-600' : ''} />

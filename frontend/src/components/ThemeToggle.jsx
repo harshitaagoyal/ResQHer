@@ -25,7 +25,7 @@ export default function ThemeToggle() {
   return (
     <button 
       onClick={toggleTheme}
-      className="p-1.5 sm:p-2 text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800 rounded-lg transition-colors ml-1"
+      className="cursor-pointer p-1.5 sm:p-2 text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800 rounded-lg transition-colors ml-1"
       title="Toggle Theme"
     >
       {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}

@@ -7,7 +7,7 @@ import { useUser, UserButton } from '@clerk/nextjs';
 import { Menu, MapPin, ShieldAlert, X } from 'lucide-react';
 
 // 🚨 IMPORTING OUR NEW CLEAN COMPONENTS 🚨
-import FakeCall from './FakeCall'; 
+import FakeCall from './fakecall/FakeCall'; 
 import Sidebar from './Sidebar';
 import ThemeToggle from './ThemeToggle';
 import AlertButton from './AlertButton';

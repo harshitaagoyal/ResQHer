@@ -1,7 +1,7 @@
 const aiService = require("../services/aiService");
 
 /**
- * 🟢 Main Chat Controller for ResQHer
+ *  Main Chat Controller for ResQHer
  * Handles real-time empathetic support, legal awareness, and safety advice.
  * * Expected Request Body:
  * {

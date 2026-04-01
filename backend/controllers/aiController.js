@@ -1,6 +1,5 @@
 const aiService = require("../services/aiService");
 
-// 🟢 Controller for generating the formal report
 exports.generateReport = async (req, res) => {
   try {
     const userData = req.body; // Expecting { name, phone, location, etc. }
@@ -20,7 +19,7 @@ exports.generateReport = async (req, res) => {
   }
 };
 
-// 🔵 Controller for extracting info from a paragraph
+// Controller for extracting info from a paragraph
 exports.analyzeIncident = async (req, res) => {
   try {
     const { text } = req.body;
@@ -40,7 +39,7 @@ exports.analyzeIncident = async (req, res) => {
   }
 };
 
-// 🟣 Controller for the inspiration poem
+// Controller for the inspiration poem
 exports.getInspiration = async (req, res) => {
   try {
     const { mood } = req.body; // Optional context like "feeling scared"

@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 const { generateTextEmbedding } = require("../utils/embedding");
 
 /**
- * 🟢 Read local documents and upload their embeddings to MongoDB
+ *  Read local documents and upload their embeddings to MongoDB
  * (Translates: /upload_embeddings)
  */
 exports.uploadEmbeddings = async (req, res) => {
@@ -47,7 +47,7 @@ exports.uploadEmbeddings = async (req, res) => {
 };
 
 /**
- * 🟢 Find matches using MongoDB Atlas Vector Search
+ * Find matches using MongoDB Atlas Vector Search
  * (Translates: /find-match)
  */
 exports.findMatch = async (req, res) => {

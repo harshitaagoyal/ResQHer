@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useUser } from '@clerk/nextjs';
-import { InputForm } from '@/components/InputForm';
+import { InputForm } from '@/components/inputform/InputForm';
 import { HeartPulse } from 'lucide-react'; // Swapped icon to match the pink theme
 
 export default function CreatePostPage() {

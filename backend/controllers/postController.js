@@ -3,7 +3,7 @@ const Post = require("../models/Post");
 const twitterUtils = require("../utils/twitter");
 
 /**
- * 🟢 Creates a new post in the DB and optionally shares to Platform X
+ *  Creates a new post in the DB and optionally shares to Platform X
  */
 exports.createAndSharePost = async (req, res) => {
   try {
@@ -45,7 +45,7 @@ exports.createAndSharePost = async (req, res) => {
 // Add these to controllers/postController.js
 
 /**
- * 🟢 Retrieve all posts (Translates: /get-admin-posts)
+ *  Retrieve all posts (Translates: /get-admin-posts)
  */
 exports.getAllPosts = async (req, res) => {
   try {
@@ -59,7 +59,7 @@ exports.getAllPosts = async (req, res) => {
 };
 
 /**
- * 🟢 Retrieve a specific post by ID (Translates: /get-post/{post_id})
+ *  Retrieve a specific post by ID (Translates: /get-post/{post_id})
  */
 exports.getPostById = async (req, res) => {
   try {
@@ -75,7 +75,7 @@ exports.getPostById = async (req, res) => {
 };
 
 /**
- * 🟢 Mark an issue as closed (Translates: /close-issue/{issue_id})
+ *  Mark an issue as closed (Translates: /close-issue/{issue_id})
  */
 exports.closeIssue = async (req, res) => {
   try {

@@ -2,7 +2,7 @@
 const steganography = require("../utils/steganography");
 const regexPtr = require("../utils/regexPtr");
 
-// 🟢 Encode Text into Image
+//  Encode Text into Image
 exports.hideData = async (req, res) => {
   try {
     if (!req.file || !req.body.text) {
@@ -19,7 +19,7 @@ exports.hideData = async (req, res) => {
   }
 };
 
-// 🟢 Decode Text from Image
+//  Decode Text from Image
 exports.revealData = async (req, res) => {
   try {
     if (!req.file) {
@@ -34,7 +34,7 @@ exports.revealData = async (req, res) => {
   }
 };
 
-// 🟢 Test the Regex Extractor (Optional: Can be used inside your aiController too)
+//  Test the Regex Extractor (Optional: Can be used inside your aiController too)
 exports.parseText = (req, res) => {
   const { text } = req.body;
   const structuredData = regexPtr.extractInfo(text);

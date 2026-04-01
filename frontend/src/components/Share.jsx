@@ -2,18 +2,15 @@
 
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-// 🚨 Changed Linkedin to Briefcase to fix the missing export error
 import { Send, Loader2, Globe, Mail, Briefcase, Share2 } from 'lucide-react'; 
 import Image from 'next/image';
 
-function Share({ imageURL, resText, setShared }) {
+// 🚨 ADDED formData to the props here so we have the user's input!
+function Share({ imageURL, resText, setShared, formData }) {
   const [isSaving, setIsSaving] = useState(false);
   
-  // Use a reliable Unsplash image as fallback if imageURL is missing
   const displayImage = imageURL || "https://images.unsplash.com/photo-1521791136064-7986c2959213?q=80&w=1024&auto=format&fit=crop";
 
-  // 1. Social Sharing logic (All 4 support Auto-Fill!)
-  // 1. Social Sharing logic (All 4 now support Web Auto-Fill!)
   const handleShare = (platform) => {
     const rawText = `Safety Report Update:\n\n"${resText}"\n\nReported via @ResQHer`;
     const encodedText = encodeURIComponent(rawText);
@@ -29,7 +26,6 @@ function Share({ imageURL, resText, setShared }) {
     } else if (platform === 'linkedin') {
       shareUrl = `https://www.linkedin.com/shareArticle?mini=true&url=${encodedUrl}&title=${encodedSubject}&summary=${encodedText}`;
     } else if (platform === 'email') {
-      // 🚨 FIX: Opens a new tab directly to Gmail web instead of a desktop app
       shareUrl = `https://mail.google.com/mail/?view=cm&fs=1&su=${encodedSubject}&body=${encodedText}%0A%0AView%20Image:%20${encodedUrl}`;
     }
 
@@ -38,24 +34,34 @@ function Share({ imageURL, resText, setShared }) {
     }
   };
 
-  // 2. Database Submission
+  // 🚨 THE REAL DATABASE SUBMISSION
   const handleFinalSubmit = async () => {
     setIsSaving(true);
     try {
-      // 🚨 MOCK SAVE: Simulating a 2-second successful save so the UI doesn't crash!
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      // 1. Combine the user's form answers with the AI generated text
+      const payload = {
+        ...formData, // name, location, phone, etc. from Step 1
+        current_situation: resText, // The AI summary
+        image_url: displayImage // The generated image
+      };
 
-      console.log("✅ Report Successfully Processed:", {
-        summary: resText,
-        image: displayImage,
-        status: 'pending'
+      // 2. Send it to our API route to save in MongoDB
+      const response = await fetch('/api/save', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
       });
-      
-      setShared(true); 
+
+      if (!response.ok) {
+        throw new Error("Failed to save to database");
+      }
+
+      console.log("✅ Report Successfully Saved to Database!");
+      setShared(true); // Move to the success screen
 
     } catch (error) {
       console.error('Submission Error:', error);
-      alert('Failed to save report to database.');
+      alert('Failed to save report to database. Please try again.');
     } finally {
       setIsSaving(false);
     }
@@ -70,6 +76,7 @@ function Share({ imageURL, resText, setShared }) {
           src={displayImage}
           alt="Report Visual"
           fill
+          sizes="(max-width: 768px) 100vw, 400px"
           className="object-cover transition-transform duration-700 group-hover:scale-105"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent p-6 flex items-end">
@@ -77,7 +84,6 @@ function Share({ imageURL, resText, setShared }) {
         </div>
       </div>
 
-      {/* Social Buttons */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 w-full max-w-2xl">
         <Button variant="outline" className="gap-2 border-blue-200 text-blue-600 hover:bg-blue-50" onClick={() => handleShare('telegram')}>
           <Send size={16} /> Telegram
@@ -93,7 +99,6 @@ function Share({ imageURL, resText, setShared }) {
         </Button>
       </div>
 
-      {/* Main Submit Button */}
       <Button
         className="w-full max-w-md h-14 bg-pink-600 hover:bg-pink-700 text-white text-lg font-bold rounded-xl shadow-lg transition-all active:scale-95"
         onClick={handleFinalSubmit}

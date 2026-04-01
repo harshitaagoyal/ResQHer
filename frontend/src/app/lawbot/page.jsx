@@ -87,13 +87,14 @@ function Page() {
 
   if (messages.length === 0) {
     return (
-      <div className="h-full flex flex-col items-center justify-center transition-colors duration-300">
+      // 🚨 CHANGED: Added min-h-[85vh], w-full, max-w-3xl, and mx-auto to force absolute centering!
+      <div className="min-h-[85vh] w-full max-w-3xl mx-auto flex flex-col items-center justify-center transition-colors duration-300">
         <h1 className="text-3xl font-extrabold tracking-wide text-gray-700 dark:text-white mb-5 text-center">
           {typingText}
         </h1>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="flex items-center max-w-3xl w-full gap-2 px-4"
+          className="flex items-center w-full gap-2 px-4"
         >
           <div className="rounded-3xl flex w-full items-center bg-slate-100 dark:bg-slate-800/50 border border-gray-300 dark:border-slate-700 p-1 shadow-sm">
             <Input
@@ -132,9 +133,9 @@ function Page() {
   }
 
   return (
-    <div className="flex flex-col h-full items-center justify-center max-w-3xl w-full mx-auto transition-colors duration-300">
-      <div className="w-full overflow-y-auto rounded-md custom-scrollbar ">
-        <div className="flex flex-col gap-2 h-[80vh] overflow-y-auto custom-scrollbar p-4">
+    <div className="flex flex-col h-[calc(100vh-5rem)] items-center justify-between max-w-3xl w-full mx-auto transition-colors duration-300">
+      <div className="w-full overflow-y-auto rounded-md custom-scrollbar flex-1">
+        <div className="flex flex-col gap-2 h-full overflow-y-auto custom-scrollbar p-4 pb-24">
           {messages.length > 0 &&
             messages.map((message, index) => (
               <div
@@ -178,7 +179,7 @@ function Page() {
                 )}
                 {message.isUser && !user && (
                   <div className="rounded-full border dark:border-slate-700 shadow-sm h-10 w-10 flex items-center justify-center flex-shrink-0 bg-white dark:bg-slate-800">
-                    <h1 className="font-semibold dark:text-slate-200">G</h1>
+                    <h1 className="font-semibold dark:text-slate-200">U</h1>
                   </div>
                 )}
               </div>
@@ -195,10 +196,11 @@ function Page() {
           )}
         </div>
       </div>
+      
       {messages.length > 0 && (
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="flex items-center max-w-3xl w-full gap-2 p-4"
+          className="flex items-center w-full gap-2 p-4 bg-white dark:bg-[#020617] mt-auto"
         >
           <div className="rounded-3xl flex w-full items-center border bg-slate-100 dark:bg-slate-800/50 border-gray-300 dark:border-slate-700 p-1 shadow-sm">
             <Input

@@ -43,7 +43,23 @@ const FormSchema = z.object({
   culprit: z.string().min(5, { message: 'Please describe the culprit.' }),
 });
 
-export function InputForm({ setText, setTextGemma }) {
+// 🚨 NEW: Smart AI Severity Calculator (Lives outside the main function)
+const calculateSeverity = (duration, situation) => {
+  const text = situation.toLowerCase();
+  
+  // High-risk keywords that indicate immediate physical danger
+  const urgentWords = ['hit', 'beat', 'strike', 'weapon', 'gun', 'knife', 'blood', 'choke', 'kill', 'threat', 'injur', 'bleed', 'slap'];
+  
+  // Check if any high-risk words are in the user's situation summary
+  const isUrgent = urgentWords.some(word => text.includes(word));
+  
+  if (isUrgent) return "Very High"; // Immediate physical danger
+  if (parseInt(duration) >= 12) return "High"; // Long-term abuse (over a year)
+  
+  return "Medium"; // Default for emotional or shorter-term situations
+};
+
+export function InputForm({ setText, setTextGemma, setFormData }) {
   const { user } = useClerk();
   const [loading, setLoading] = useState(false);
   const [selectedContactMethods, setSelectedContactMethods] = useState([]);
@@ -77,23 +93,35 @@ export function InputForm({ setText, setTextGemma }) {
   };
 
   async function onSubmit(data) {
-  try {
-    setLoading(true);
-    const res = await axios.post('/api/generate-text', {
-      ...data,
-      email: user?.primaryEmailAddress?.emailAddress,
-    });
-    
-    if (res.data.gemini_response && res.data.gemma_response) {
-      setText(res.data.gemini_response);
-      setTextGemma(res.data.gemma_response);
+    try {
+      setLoading(true);
+      
+      // 🚨 Run the Smart Calculator
+      const dynamicSeverity = calculateSeverity(data.occurrenceDuration, data.currentSituation);
+
+      if (setFormData) {
+        setFormData({
+          ...data,
+          severity: dynamicSeverity, // Automatically attach the calculated severity
+          email: user?.primaryEmailAddress?.emailAddress || "" 
+        });
+      }
+
+      const res = await axios.post('/api/generate-text', {
+        ...data,
+        email: user?.primaryEmailAddress?.emailAddress,
+      });
+      
+      if (res.data.gemini_response && res.data.gemma_response) {
+        setText(res.data.gemini_response);
+        setTextGemma(res.data.gemma_response);
+      }
+    } catch (e) {
+      console.error("Submission Error:", e);
+    } finally {
+      setLoading(false);
     }
-  } catch (e) {
-    console.error("Submission Error:", e);
-  } finally {
-    setLoading(false);
   }
-}
 
   return (
     <Form {...form}>
@@ -158,7 +186,6 @@ export function InputForm({ setText, setTextGemma }) {
           />
         )}
 
-        {/* Updated Location Security Box */}
         <div className="p-4 bg-slate-50 dark:bg-slate-900/50 rounded-xl border-2 border-dashed border-slate-200 dark:border-slate-700">
           <FormLabel>Location Security</FormLabel>
           <div className="flex items-center gap-4 mt-2">

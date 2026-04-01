@@ -1,6 +1,8 @@
 import { ClerkProvider } from '@clerk/nextjs'
 import { Inter } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
+// 🚨 NEW: Import your Navbar component
+import Navbar from "@/components/Navbar";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -14,7 +16,6 @@ export default function RootLayout({ children }) {
   return (
     <ClerkProvider>
       <html lang="en" suppressHydrationWarning>
-        {/* Added inter.className here to make the font look professional */}
         <body className={inter.className}>
           <ThemeProvider
             attribute="class"
@@ -22,8 +23,14 @@ export default function RootLayout({ children }) {
             enableSystem
             disableTransitionOnChange
           >
-            {/* Any Navbar or headers you have would go here */}
-            {children}
+            {/* 🚨 NEW: The Navbar is now locked at the top of the entire application */}
+            <Navbar />
+            
+            {/* The individual pages will load inside this main container below the Navbar */}
+            <main>
+              {children}
+            </main>
+            
           </ThemeProvider>
         </body>
       </html>

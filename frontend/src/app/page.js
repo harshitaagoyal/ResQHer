@@ -1,11 +1,15 @@
 import Header from '@/components/Header';
-// import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
 
 export default function Home() {
   return (
-    <main className="h-full">
-      {/* <Navbar /> */}
-      <Header />
+    // Use min-h-screen and flex-col
+    <main className="min-h-screen flex flex-col bg-white">
+      <div className="flex-grow">
+        <Header />
+      </div>
+      {/* Ensure Footer is OUTSIDE the flex-grow div */}
+      <Footer />
     </main>
   );
 }

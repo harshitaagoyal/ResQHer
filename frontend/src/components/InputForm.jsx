@@ -69,7 +69,7 @@ const calculateSeverity = (durationVal, unit, situation) => {
 export function InputForm() {
   const { user } = useClerk();
   const [loading, setLoading] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false); // 🚨 NEW: Tracks if the form is successfully sent
+  const [isSubmitted, setIsSubmitted] = useState(false); 
   const [selectedContactMethods, setSelectedContactMethods] = useState([]);
   const [detectedCountry, setDetectedCountry] = useState('IN');
   const [attachments, setAttachments] = useState([]);
@@ -130,7 +130,6 @@ export function InputForm() {
       const dynamicSeverity = calculateSeverity(data.occurrenceDurationValue, data.occurrenceDurationUnit, data.currentSituation);
       const combinedDurationStr = `${data.occurrenceDurationValue} ${data.occurrenceDurationUnit}`;
 
-      // 🚨 NEW: Create FormData to handle text + image files simultaneously
       const formDataToSubmit = new FormData();
       formDataToSubmit.append('name', data.name);
       formDataToSubmit.append('email', user?.primaryEmailAddress?.emailAddress || '');
@@ -142,19 +141,19 @@ export function InputForm() {
       formDataToSubmit.append('currentSituation', data.currentSituation);
       formDataToSubmit.append('culprit', data.culprit);
       formDataToSubmit.append('severity', dynamicSeverity);
+      formDataToSubmit.append('status', 'Pending');
 
-      // Append all selected photos
       attachments.forEach((file) => {
         formDataToSubmit.append('attachments', file);
       });
 
-      // 🚨 Send directly to your backend admin endpoint
-      // Example: await axios.post('/api/submit-report', formDataToSubmit);
+      // 🚨 ACTUALLY SENDING DATA TO BACKEND
+      await axios.post('/api/submit-report', formDataToSubmit, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
 
-      // Simulating a network request for now
-      await new Promise(resolve => setTimeout(resolve, 2000));
-
-      // Show the success screen!
       setIsSubmitted(true);
 
     } catch (e) {
@@ -165,7 +164,6 @@ export function InputForm() {
     }
   }
 
-  // 🚨 SUCCESS SCREEN UI (Renders if form is submitted successfully)
   if (isSubmitted) {
     return (
       <div className="text-center py-12 animate-in fade-in zoom-in duration-500">

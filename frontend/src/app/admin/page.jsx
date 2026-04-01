@@ -1,87 +1,218 @@
 'use client';
 
-import React from 'react';
-import Link from 'next/link';
-import { ShieldCheck, Scale, HeartHandshake, MapPin } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import Link from 'next/link'; // 🚨 NEW: Imported Link for the logo
+import { useUser, UserButton } from '@clerk/nextjs';
+import { useRouter } from 'next/navigation';
+import { Loader2, Filter, X } from 'lucide-react';
 
-export default function HomePage() {
+import AdminIncidentTable from '@/components/AdminIncidentTable';
+import IncidentDetailView from '@/components/IncidentDetailView';
+import { ModeToggle } from '@/components/ModeToggle'; 
+
+export default function AdminPage() {
+  const { user, isLoaded } = useUser();
+  const router = useRouter();
+
+  const [incidents, setIncidents] = useState([]);
+  const [isLoadingData, setIsLoadingData] = useState(true);
+  const [selectedIncident, setSelectedIncident] = useState(null);
+  
+  const [searchQuery, setSearchQuery] = useState('');
+  const [showFilters, setShowFilters] = useState(false);
+  const [filterSeverity, setFilterSeverity] = useState('All');
+  const [filterStatus, setFilterStatus] = useState('All');
+
+  useEffect(() => {
+    if (isLoaded && !user) {
+      router.push('/select-role');
+    }
+  }, [isLoaded, user, router]);
+
+  const fetchIncidents = async () => {
+    setIsLoadingData(true);
+    try {
+      const res = await fetch('/api/get-incidents'); 
+      if (res.ok) {
+        const data = await res.json();
+        setIncidents(data);
+      }
+    } catch (error) {
+      console.error("Error fetching incidents:", error);
+    } finally {
+      setIsLoadingData(false);
+    }
+  };
+
+  useEffect(() => {
+    if (isLoaded && user) {
+      fetchIncidents();
+    }
+  }, [isLoaded, user]);
+
+  const filteredIncidents = incidents.filter(incident => {
+    const nameToCheck = (incident.name || incident.userName || "Anonymous").toLowerCase();
+    const locToCheck = (typeof incident.location === 'string' ? incident.location : "gps logged").toLowerCase();
+    const searchLower = searchQuery.toLowerCase();
+    const matchesSearch = nameToCheck.includes(searchLower) || locToCheck.includes(searchLower);
+
+    const matchesSeverity = filterSeverity === 'All' || incident.severity === filterSeverity;
+    const matchesStatus = filterStatus === 'All' || (incident.status || 'Pending') === filterStatus;
+
+    return matchesSearch && matchesSeverity && matchesStatus;
+  });
+
+  if (!isLoaded || !user) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-[#020617]">
+        <Loader2 className="animate-spin text-indigo-600" size={48} />
+      </div>
+    );
+  }
+
+  if (selectedIncident) {
+    return (
+      <div className="min-h-screen bg-[#f8fafc] dark:bg-[#020617] p-4 sm:p-8">
+        <div className="max-w-7xl mx-auto space-y-4">
+          
+          {/* 🚨 LOGO FOR DETAILS VIEW 🚨 */}
+          <div className="flex items-center pb-2">
+            <Link href="/" className="flex items-center gap-1">
+              <span className="text-2xl font-black tracking-tight text-slate-900 dark:text-white">
+                ResQ<span className="text-pink-600">Her</span>
+              </span>
+            </Link>
+          </div>
+
+          <IncidentDetailView 
+            incident={selectedIncident} 
+            onBack={() => setSelectedIncident(null)} 
+            onUpdate={fetchIncidents} 
+          />
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center bg-white dark:bg-[#020617] p-8 overflow-hidden">
-      <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+    <div className="min-h-screen bg-[#f8fafc] dark:bg-[#020617] p-6 sm:p-10 font-sans">
+      <div className="max-w-7xl mx-auto space-y-6">
         
-        {/* Left Side: Text and Buttons */}
-        <div className="space-y-6 z-10">
-          <h1 className="text-5xl lg:text-6xl font-extrabold text-slate-900 dark:text-white leading-[1.1]">
-            Empower Your Safety <br className="hidden lg:block" />
-            and Rights with <span className="text-pink-600">ResQHer</span>
-          </h1>
+        {/* 🚨 ADMIN LOGO / BRANDING 🚨 */}
+        <div className="flex items-center justify-between mb-2">
+          <Link href="/" className="flex items-center gap-1">
+            <span className="text-2xl sm:text-3xl font-black tracking-tight text-slate-900 dark:text-white">
+              ResQ<span className="text-pink-600">Her</span>
+            </span>
+            <span className="ml-2 px-2 py-1 rounded-md text-[10px] font-black uppercase tracking-widest bg-indigo-100 text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400">
+              Admin Hub
+            </span>
+          </Link>
+        </div>
+
+        {/* HEADER: Live Updates + User Controls */}
+        <div className="flex justify-between items-center mb-8 bg-white dark:bg-slate-900 p-4 rounded-2xl border dark:border-slate-800 shadow-sm">
+          <div className="flex items-center gap-3">
+            <h1 className="text-2xl font-bold text-slate-900 dark:text-white">Live Updates</h1>
+            <span className="relative flex h-4 w-4">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-4 w-4 bg-red-500"></span>
+            </span>
+          </div>
           
-          <p className="text-lg text-slate-600 dark:text-slate-400 leading-relaxed max-w-lg">
-            At ResQHer, we provide women with the tools they need for safety and justice. Access legal guidance, report incidents securely, and find support. Your journey starts here, and we are with you every step! 🛡️
-          </p>
-          
-          <div className="flex flex-wrap items-center gap-4 pt-4">
-            <Link 
-              href="/create-post" 
-              className="bg-pink-600 hover:bg-pink-700 text-white font-bold py-3 px-8 rounded-xl shadow-lg shadow-pink-500/30 transition-all hover:-translate-y-1"
-            >
-              Get Started
-            </Link>
-            <Link 
-              href="/create-post" 
-              className="border-2 border-pink-600 text-pink-600 dark:text-pink-400 dark:border-pink-500 font-bold py-3 px-8 rounded-xl hover:bg-pink-50 dark:hover:bg-pink-900/20 transition-all"
-            >
-              Report Now
-            </Link>
+          <div className="flex items-center gap-4">
+            <ModeToggle />
+            <UserButton afterSignOutUrl="/" />
           </div>
         </div>
 
-        {/* Right Side: Modern Bento Box Feature Grid */}
-        <div className="relative w-full max-w-lg mx-auto lg:mx-0 lg:ml-auto">
+        {/* SEARCH & FILTER BAR */}
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           
-          {/* Decorative blurred background blobs */}
-          <div className="absolute -top-10 -left-10 w-72 h-72 bg-pink-300 dark:bg-pink-900/50 rounded-full mix-blend-multiply filter blur-3xl opacity-50 animate-pulse"></div>
-          <div className="absolute top-20 -right-10 w-72 h-72 bg-blue-300 dark:bg-blue-900/50 rounded-full mix-blend-multiply filter blur-3xl opacity-50 animate-pulse delay-1000"></div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 relative z-10">
-            
-            {/* Box 1: AI Legal Aid */}
-            <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl p-6 rounded-[2rem] shadow-sm border border-slate-100 dark:border-slate-800 hover:-translate-y-2 hover:shadow-xl hover:shadow-pink-500/10 hover:border-pink-200 dark:hover:border-pink-900/50 transition-all duration-300 group">
-              <div className="w-12 h-12 bg-pink-100 dark:bg-pink-900/40 text-pink-600 dark:text-pink-400 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 group-hover:rotate-3 transition-transform">
-                <Scale size={24} />
-              </div>
-              <h3 className="font-bold text-slate-900 dark:text-white mb-1">AI Legal Aid</h3>
-              <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">Instant, reliable guidance on IPC sections and women's rights.</p>
-            </div>
-
-            {/* Box 2: Therapy Bot */}
-            <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl p-6 rounded-[2rem] shadow-sm border border-slate-100 dark:border-slate-800 hover:-translate-y-2 hover:shadow-xl hover:shadow-purple-500/10 hover:border-purple-200 dark:hover:border-purple-900/50 transition-all duration-300 group sm:translate-y-8">
-              <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900/40 text-purple-600 dark:text-purple-400 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 group-hover:-rotate-3 transition-transform">
-                <HeartHandshake size={24} />
-              </div>
-              <h3 className="font-bold text-slate-900 dark:text-white mb-1">Therapy Bot</h3>
-              <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">Compassionate emotional support and grounding exercises, 24/7.</p>
-            </div>
-
-            {/* Box 3: Live Tracking */}
-            <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl p-6 rounded-[2rem] shadow-sm border border-slate-100 dark:border-slate-800 hover:-translate-y-2 hover:shadow-xl hover:shadow-blue-500/10 hover:border-blue-200 dark:hover:border-blue-900/50 transition-all duration-300 group sm:-translate-y-4">
-              <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 group-hover:rotate-3 transition-transform">
-                <MapPin size={24} />
-              </div>
-              <h3 className="font-bold text-slate-900 dark:text-white mb-1">Live Tracking</h3>
-              <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">Direct GPS routing to authorities for immediate intervention.</p>
-            </div>
-
-            {/* Box 4: 100% Secure */}
-            <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl p-6 rounded-[2rem] shadow-sm border border-slate-100 dark:border-slate-800 hover:-translate-y-2 hover:shadow-xl hover:shadow-emerald-500/10 hover:border-emerald-200 dark:hover:border-emerald-900/50 transition-all duration-300 group sm:translate-y-4">
-              <div className="w-12 h-12 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-600 dark:text-emerald-400 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 group-hover:-rotate-3 transition-transform">
-                <ShieldCheck size={24} />
-              </div>
-              <h3 className="font-bold text-slate-900 dark:text-white mb-1">100% Secure</h3>
-              <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">End-to-end encrypted reporting to protect your identity.</p>
-            </div>
-
+          <div className="relative w-full sm:w-96">
+            <input 
+              type="text" 
+              placeholder="Search by name or location..." 
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-4 pr-10 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all dark:text-white"
+            />
           </div>
+
+          <div className="relative">
+            <button 
+              onClick={() => setShowFilters(!showFilters)}
+              className="flex items-center gap-2 px-4 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+            >
+              <Filter size={16} /> Filters
+              {(filterSeverity !== 'All' || filterStatus !== 'All') && (
+                <span className="w-2 h-2 rounded-full bg-pink-600 ml-1"></span>
+              )}
+            </button>
+
+            {/* Filter Dropdown Menu */}
+            {showFilters && (
+              <div className="absolute right-0 top-12 w-64 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-xl z-50 p-4 animate-in fade-in slide-in-from-top-2">
+                <div className="flex justify-between items-center mb-3">
+                  <h3 className="font-bold text-slate-900 dark:text-white text-sm">Filter Incidents</h3>
+                  <button onClick={() => setShowFilters(false)} className="text-slate-400 hover:text-slate-600"><X size={16}/></button>
+                </div>
+                
+                <div className="space-y-4">
+                  <div>
+                    <label className="text-xs font-bold text-slate-500 mb-1 block">Severity</label>
+                    <select 
+                      value={filterSeverity} 
+                      onChange={(e) => setFilterSeverity(e.target.value)}
+                      className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg p-2 text-sm dark:text-white outline-none focus:ring-1 focus:ring-indigo-500"
+                    >
+                      <option value="All">All Severities</option>
+                      <option value="Very High">Very High</option>
+                      <option value="High">High</option>
+                      <option value="Medium">Medium</option>
+                      <option value="Low">Low</option>
+                    </select>
+                  </div>
+                  
+                  <div>
+                    <label className="text-xs font-bold text-slate-500 mb-1 block">Status</label>
+                    <select 
+                      value={filterStatus} 
+                      onChange={(e) => setFilterStatus(e.target.value)}
+                      className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg p-2 text-sm dark:text-white outline-none focus:ring-1 focus:ring-indigo-500"
+                    >
+                      <option value="All">All Statuses</option>
+                      <option value="Pending">Pending</option>
+                      <option value="Closed">Closed</option>
+                    </select>
+                  </div>
+
+                  <button 
+                    onClick={() => { setFilterSeverity('All'); setFilterStatus('All'); }}
+                    className="w-full text-xs font-bold text-pink-600 hover:text-pink-700 py-1"
+                  >
+                    Reset Filters
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Table Component */}
+        <div className="mt-4">
+          {isLoadingData ? (
+            <div className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-12 flex flex-col items-center justify-center text-slate-500">
+              <Loader2 className="animate-spin mb-4 text-indigo-500" size={32} />
+              <p>Loading active incidents...</p>
+            </div>
+          ) : (
+            <AdminIncidentTable 
+              incidents={filteredIncidents} 
+              onViewDetails={(incident) => setSelectedIncident(incident)}
+              onDeleteSuccess={fetchIncidents}
+            />
+          )}
         </div>
 
       </div>

@@ -83,7 +83,7 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-lg font-black text-slate-900 mb-6 uppercase tracking-wider">Platform</h4>
+            <h4 className="text-lg font-black text-slate-900 dark:text-white mb-6 uppercase tracking-wider">Platform</h4>
             <ul className="space-y-4">
               <li><Link href="/create-post" className="text-slate-500 font-bold hover:text-[#ed0b70]">Report Now</Link></li>
               <li><Link href="/lawbot" className="text-slate-500 font-bold hover:text-[#ed0b70]">Law Bot</Link></li>
@@ -95,7 +95,7 @@ export default function Footer() {
 
           {/* Resources */}
           <div>
-            <h4 className="text-lg font-black text-slate-900 mb-6 uppercase tracking-wider">Resources</h4>
+            <h4 className="text-lg font-black text-slate-900 dark:text-white mb-6 uppercase tracking-wider">Resources</h4>
             <ul className="space-y-4">
               <li><Link href="/about-us" className="text-slate-500 font-bold hover:text-[#ed0b70]">About Us</Link></li>
               <li><Link href="/vision" className="text-slate-500 font-bold hover:text-[#ed0b70]">Our Vision</Link></li>

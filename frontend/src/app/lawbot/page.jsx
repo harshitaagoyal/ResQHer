@@ -32,7 +32,7 @@ const promptSuggestions = [
 
 function Page() {
   const [messages, setMessages] = React.useState([]);
-  const typingText = useTypingText('What can I help you with?');
+  const typingText = useTypingText('What can I help you with?',40);
   const [isThinking, setIsThinking] = React.useState(false);
   
   function useTypingText(text, speed = 100) {

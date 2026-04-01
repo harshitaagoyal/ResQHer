@@ -2,7 +2,8 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { useUser, UserButton, SignInButton } from '@clerk/nextjs';
+import { usePathname } from 'next/navigation'; // 🚨 ADDED THIS IMPORT
+import { useUser, UserButton } from '@clerk/nextjs';
 import { Menu, MapPin, ShieldAlert, X } from 'lucide-react';
 
 // 🚨 IMPORTING OUR NEW CLEAN COMPONENTS 🚨
@@ -14,6 +15,12 @@ import AlertButton from './AlertButton';
 export default function Navbar() {
   const { user } = useUser();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const pathname = usePathname(); // 🚨 GET THE CURRENT URL PATH
+
+  // 🚨 HIDE NAVBAR ON ADMIN PAGES 🚨
+  if (pathname?.startsWith('/admin')) {
+    return null; // Renders absolutely nothing if we are in the admin section
+  }
 
   const handleQuickExit = () => {
     window.location.replace('https://www.google.com');
@@ -28,12 +35,12 @@ export default function Navbar() {
             {/* Left Side: Hamburger Menu & Logo */}
             <div className="flex items-center gap-3">
               <button 
-  onClick={() => setIsSidebarOpen(true)}
-  className="cursor-pointer p-1.5 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
-  title="Open Menu"
->
-  <Menu size={24} />
-</button>
+                onClick={() => setIsSidebarOpen(true)}
+                className="cursor-pointer p-1.5 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
+                title="Open Menu"
+              >
+                <Menu size={24} />
+              </button>
               
               <Link href="/" className="flex items-center gap-1">
                 <span className="text-xl sm:text-2xl font-black tracking-tight text-slate-900 dark:text-white">
@@ -73,13 +80,13 @@ export default function Navbar() {
 
               {/* 5. Quick Exit */}
               <button 
-  onClick={handleQuickExit}
-  className="cursor-pointer flex items-center gap-1.5 p-1.5 sm:px-3 sm:py-1.5 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-all font-bold text-sm sm:text-base ml-1 sm:ml-2"
-  title="Quick Exit to Google"
->
-  <span className="hidden sm:block">Quick Exit</span>
-  <X size={18} strokeWidth={2.5} />
-</button>
+                onClick={handleQuickExit}
+                className="cursor-pointer flex items-center gap-1.5 p-1.5 sm:px-3 sm:py-1.5 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-all font-bold text-sm sm:text-base ml-1 sm:ml-2"
+                title="Quick Exit to Google"
+              >
+                <span className="hidden sm:block">Quick Exit</span>
+                <X size={18} strokeWidth={2.5} />
+              </button>
 
               {/* 6. Theme Toggle Module */}
               <ThemeToggle />
@@ -89,9 +96,10 @@ export default function Navbar() {
                 {user ? (
                   <UserButton afterSignOutUrl="/" />
                 ) : (
-                  <SignInButton mode="modal">
-                    <button className="text-sm font-bold text-slate-700 dark:text-slate-300 hover:text-pink-600 transition-colors">Log In</button>
-                  </SignInButton>
+                  // 🚨 CHANGED: Now points to /select-role instead of opening the modal directly
+                  <Link href="/select-role" className="text-sm font-bold text-slate-700 dark:text-slate-300 hover:text-pink-600 transition-colors">
+                    Log In
+                  </Link>
                 )}
               </div>
 

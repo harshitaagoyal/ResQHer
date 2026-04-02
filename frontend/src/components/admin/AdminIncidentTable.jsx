@@ -8,9 +8,8 @@ export default function AdminIncidentTable({ incidents, onViewDetails, onDeleteS
   const [openDropdown, setOpenDropdown] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
   
-  // 🚨 UPGRADED SORTING STATE
-  const [sortField, setSortField] = useState('date'); // default to sorting by date
-  const [sortDirection, setSortDirection] = useState('desc'); // newest first
+  const [sortField, setSortField] = useState('date');
+  const [sortDirection, setSortDirection] = useState('desc');
 
   useEffect(() => {
     const closeDropdown = () => setOpenDropdown(null);
@@ -24,10 +23,8 @@ export default function AdminIncidentTable({ incidents, onViewDetails, onDeleteS
 
   const handleSort = (field) => {
     if (sortField === field) {
-      // Toggle direction if clicking the same field
       setSortDirection(sortDirection === 'desc' ? 'asc' : 'desc');
     } else {
-      // Set new field and default to descending
       setSortField(field);
       setSortDirection('desc');
     }
@@ -35,7 +32,6 @@ export default function AdminIncidentTable({ incidents, onViewDetails, onDeleteS
 
   const severityRank = { "Very High": 4, "High": 3, "Medium": 2, "Low": 1 };
 
-  // 🚨 UPGRADED SORTING LOGIC (Handles Date & Severity)
   const sortedIncidents = [...incidents].sort((a, b) => {
     if (sortField === 'severity') {
       const rankA = severityRank[a.severity || "Medium"] || 0;
@@ -72,16 +68,17 @@ export default function AdminIncidentTable({ incidents, onViewDetails, onDeleteS
   };
 
   return (
-    <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-visible shadow-sm">
-      <div className="overflow-x-auto">
-        <table className="w-full text-sm text-left">
+    // 🚨 ADDED: overflow-hidden so the rounded-xl corners don't get broken by the inner scrollbar on mobile
+    <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm w-full overflow-hidden">
+      
+      {/* This enables the horizontal swipe on mobile! */}
+      <div className="overflow-x-auto w-full">
+        
+        {/* min-w-[800px] keeps the columns wide enough to read */}
+        <table className="w-full text-sm text-left min-w-[800px]">
           <thead className="bg-white dark:bg-slate-900 text-slate-500 border-b border-slate-200 dark:border-slate-800">
             <tr>
               <th className="px-6 py-4 font-medium">S.No</th>
-              
-              {/* 🚨 NEW: DATE COLUMN */}
-              
-
               <th className="px-6 py-4 font-medium">Name</th>
               <th className="px-6 py-4 font-medium">
                 <button onClick={() => handleSort('date')} className="flex items-center gap-1 hover:text-slate-900 dark:hover:text-white transition-colors outline-none cursor-pointer">
@@ -90,14 +87,12 @@ export default function AdminIncidentTable({ incidents, onViewDetails, onDeleteS
                 </button>
               </th>
               <th className="px-6 py-4 font-medium">Location</th>
-              
               <th className="px-6 py-4 font-medium">
                 <button onClick={() => handleSort('severity')} className="flex items-center gap-1 hover:text-slate-900 dark:hover:text-white transition-colors outline-none cursor-pointer">
                   Severity {sortField === 'severity' && (sortDirection === 'desc' ? <ArrowDown size={14} /> : <ArrowUp size={14} />)}
                   {sortField !== 'severity' && <ArrowUpDown size={14} className="opacity-50" />}
                 </button>
               </th>
-              
               <th className="px-6 py-4 font-medium text-center">Issue</th>
               <th className="px-6 py-4 font-medium">Status</th>
               <th className="px-6 py-4 font-medium text-center">Evidence</th>

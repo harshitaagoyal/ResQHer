@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import Link from 'next/link'; 
 import { useUser } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
 import { Loader2 } from 'lucide-react';
@@ -71,57 +70,53 @@ export default function AdminPage() {
     );
   }
 
-  if (selectedIncident) {
-    return (
-      <div className="min-h-screen bg-[#f8fafc] dark:bg-[#020617] p-4 sm:p-8">
-        <div className="max-w-7xl mx-auto space-y-4">
-          <div className="flex items-center pb-2">
-            <Link href="/" className="flex items-center gap-1">
-              <span className="text-2xl font-black tracking-tight text-slate-900 dark:text-white">
-                ResQ<span className="text-pink-600">Her</span>
-              </span>
-            </Link>
-          </div>
-
-          <IncidentDetailView 
-            incident={selectedIncident} 
-            onBack={() => setSelectedIncident(null)} 
-            onUpdate={fetchIncidents} 
-          />
-        </div>
-      </div>
-    );
-  }
-
+  // --- RESTRUCTURED RETURN SECTION ---
   return (
-    <div className="min-h-screen bg-[#f8fafc] dark:bg-[#020617] p-6 sm:p-10 font-sans">
+    <div className="min-h-screen bg-[#f8fafc] dark:bg-[#020617] p-4 md:p-10 font-sans">
       <div className="max-w-7xl mx-auto space-y-6">
+        
+        {/* 🚨 HEADER NOW STAYS VISIBLE FOR BOTH VIEWS */}
         <AdminHeader />
-        <AdminFilters 
-          searchQuery={searchQuery}
-          setSearchQuery={setSearchQuery}
-          filterSeverity={filterSeverity}
-          setFilterSeverity={setFilterSeverity}
-          filterStatus={filterStatus}
-          setFilterStatus={setFilterStatus}
-          showFilters={showFilters}
-          setShowFilters={setShowFilters}
-        />
 
-        <div className="mt-4">
-          {isLoadingData ? (
-            <div className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-12 flex flex-col items-center justify-center text-slate-500">
-              <Loader2 className="animate-spin mb-4 text-indigo-500" size={32} />
-              <p>Loading active incidents...</p>
-            </div>
-          ) : (
-            <AdminIncidentTable 
-              incidents={filteredIncidents} 
-              onViewDetails={(incident) => setSelectedIncident(incident)}
-              onDeleteSuccess={fetchIncidents}
+        {selectedIncident ? (
+          /* --- INCIDENT DETAIL VIEW --- */
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <IncidentDetailView 
+              incident={selectedIncident} 
+              onBack={() => setSelectedIncident(null)} 
+              onUpdate={fetchIncidents} 
             />
-          )}
-        </div>
+          </div>
+        ) : (
+          /* --- MAIN DASHBOARD VIEW --- */
+          <div className="space-y-6 animate-in fade-in duration-500">
+            <AdminFilters 
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
+              filterSeverity={filterSeverity}
+              setFilterSeverity={setFilterSeverity}
+              filterStatus={filterStatus}
+              setFilterStatus={setFilterStatus}
+              showFilters={showFilters}
+              setShowFilters={setShowFilters}
+            />
+
+            <div className="mt-4">
+              {isLoadingData ? (
+                <div className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-12 flex flex-col items-center justify-center text-slate-500">
+                  <Loader2 className="animate-spin mb-4 text-indigo-500" size={32} />
+                  <p>Loading active incidents...</p>
+                </div>
+              ) : (
+                <AdminIncidentTable 
+                  incidents={filteredIncidents} 
+                  onViewDetails={(incident) => setSelectedIncident(incident)}
+                  onDeleteSuccess={fetchIncidents}
+                />
+              )}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

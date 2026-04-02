@@ -37,10 +37,10 @@ export default function FakeCallConfigModal({
 
           <div className="pt-2">
             <button 
-              onClick={() => onStartCall(3)} 
+              onClick={() => onStartCall(0)} 
               className="cursor-pointer w-full bg-pink-600 hover:bg-pink-700 text-white font-bold py-3 rounded-xl transition-colors shadow-md mb-3"
             >
-              Call Right Now (3s)
+              Call Right Now
             </button>
 
             <div className="relative flex items-center py-2">

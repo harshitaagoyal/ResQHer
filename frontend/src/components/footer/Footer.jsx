@@ -45,16 +45,20 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="bg-white dark:bg-[#020617] border-t border-slate-100 dark:border-slate-800 pt-16 pb-8">
-      <div className="max-w-7xl mx-auto px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+    // 🚨 CHANGED: Reduced top padding on mobile (pt-10) vs desktop (md:pt-16)
+    <footer className="bg-white dark:bg-[#020617] border-t border-slate-100 dark:border-slate-800 pt-10 md:pt-16 pb-8">
+      {/* 🚨 CHANGED: Adjusted horizontal padding for mobile (px-6) vs desktop (md:px-8) */}
+      <div className="max-w-7xl mx-auto px-6 md:px-8">
+        
+        {/* The Grid: This was already perfectly responsive! */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-12 mb-12 md:mb-16">
           
           {/* Brand & Socials */}
-          <div className="space-y-6">
+          <div className="space-y-4 md:space-y-6">
             <Link href="/" className="text-3xl font-black tracking-tighter text-slate-900 dark:text-white">
               ResQ<span className="text-[#ed0b70]">Her</span>
             </Link>
-            <p className="text-slate-500 dark:text-slate-400 font-medium leading-relaxed">
+            <p className="text-sm md:text-base text-slate-500 dark:text-slate-400 font-medium leading-relaxed">
               Empowering women with technology-driven safety tools, legal guidance, and emotional support. Because every woman deserves to feel secure.
             </p>
             <div className="flex gap-4 items-center">
@@ -71,8 +75,8 @@ export default function Footer() {
 
           {/* Contact Details */}
           <div>
-            <h4 className="text-lg font-black text-slate-900 dark:text-white mb-6 uppercase tracking-wider">Contact</h4>
-            <ul className="space-y-4">
+            <h4 className="text-base md:text-lg font-black text-slate-900 dark:text-white mb-4 md:mb-6 uppercase tracking-wider">Contact</h4>
+            <ul className="space-y-3 md:space-y-4">
               <FooterContactItem 
                 href="https://mail.google.com/mail/?view=cm&to=resqher80@gmail.com" 
                 icon={Mail} 
@@ -88,12 +92,13 @@ export default function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="pt-8 border-t border-slate-100 dark:border-slate-800 flex flex-col md:flex-row justify-between items-center gap-4 text-center">
-          <p className="text-slate-400 font-bold text-sm">
+        {/* 🚨 CHANGED: Adjusted to flex-col for mobile, flex-row for desktop, and centered text */}
+        <div className="pt-6 md:pt-8 border-t border-slate-100 dark:border-slate-800 flex flex-col md:flex-row justify-between items-center gap-4 text-center">
+          <p className="text-slate-400 font-bold text-xs md:text-sm">
             © {currentYear} <span className="text-slate-900 dark:text-white font-black">ResQHer</span>. All rights reserved.
           </p>
-          <p className="flex items-center gap-1.5 text-slate-400 font-bold text-sm">
-            Made with <Heart size={16} className="text-[#ed0b70] fill-[#ed0b70]" /> for a Safer World
+          <p className="flex items-center gap-1.5 text-slate-400 font-bold text-xs md:text-sm">
+            Made with <Heart size={14} className="text-[#ed0b70] fill-[#ed0b70]" /> for a Safer World
           </p>
         </div>
       </div>

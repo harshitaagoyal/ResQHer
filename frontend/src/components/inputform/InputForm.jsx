@@ -85,6 +85,7 @@ export function InputForm() {
       const dynamicSeverity = calculateSeverity(data.occurrenceDurationValue, data.occurrenceDurationUnit, data.currentSituation);
       const combinedDurationStr = `${data.occurrenceDurationValue} ${data.occurrenceDurationUnit}`;
 
+      // Native fetch approach from our previous fix
       const formDataToSubmit = new FormData();
       formDataToSubmit.append('name', data.name);
       formDataToSubmit.append('email', user?.primaryEmailAddress?.emailAddress || '');
@@ -102,15 +103,22 @@ export function InputForm() {
         formDataToSubmit.append('attachments', file);
       });
 
-      await axios.post('/api/submit-report', formDataToSubmit, {
-        headers: { 'Content-Type': 'multipart/form-data' }
+      const response = await fetch('/api/submit-report', {
+        method: 'POST',
+        body: formDataToSubmit,
       });
+
+      const responseData = await response.json();
+
+      if (!response.ok) {
+        throw new Error(responseData.details || "Unknown Server Error");
+      }
 
       setIsSubmitted(true);
 
     } catch (e) {
       console.error("Submission Error:", e);
-      alert("Something went wrong securely submitting your report. Please try again.");
+      alert(`Something went wrong securely submitting your report: ${e.message}`);
     } finally {
       setLoading(false);
     }
@@ -118,17 +126,17 @@ export function InputForm() {
 
   if (isSubmitted) {
     return (
-      <div className="text-center py-12 animate-in fade-in zoom-in duration-500">
-        <div className="mx-auto w-20 h-20 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mb-6">
-          <CheckCircle2 className="h-10 w-10 text-green-600 dark:text-green-500" />
+      <div className="text-center py-12 animate-in fade-in zoom-in duration-500 p-4">
+        <div className="mx-auto w-16 h-16 sm:w-20 sm:h-20 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mb-6">
+          <CheckCircle2 className="h-8 w-8 sm:h-10 sm:w-10 text-green-600 dark:text-green-500" />
         </div>
-        <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">Report Submitted Securely</h2>
-        <p className="text-slate-600 dark:text-slate-400 mb-8 max-w-md mx-auto">
+        <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-2">Report Submitted Securely</h2>
+        <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400 mb-8 max-w-md mx-auto">
           Your information and evidence have been encrypted and sent to the admin team. They will reach out to you via your preferred contact method shortly.
         </p>
         <Button 
           onClick={() => window.location.href = '/'}
-          className="bg-slate-900 hover:bg-slate-800 dark:bg-slate-100 dark:hover:bg-white dark:text-slate-900 font-bold"
+          className="w-full sm:w-auto bg-slate-900 hover:bg-slate-800 dark:bg-slate-100 dark:hover:bg-white dark:text-slate-900 font-bold"
         >
           Return to Home Safety
         </Button>
@@ -163,7 +171,8 @@ export function InputForm() {
           render={({ field }) => (
             <FormItem>
               <FormLabel className="text-base font-semibold">Preferred Contact Method</FormLabel>
-              <div className="grid grid-cols-2 gap-4 mt-2">
+              {/* 🚨 CHANGED: 1 column on mobile (grid-cols-1), 2 columns on desktop (sm:grid-cols-2) */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mt-2">
                 {contactMethods.map((method) => (
                   <div key={method} className="flex items-center space-x-2 border dark:border-slate-800 p-3 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
                     <Checkbox
@@ -222,12 +231,14 @@ export function InputForm() {
                 <FormLabel>
                   Duration of Incidents: <span className="text-pink-600 dark:text-pink-500 font-bold ml-1">{field.value} {unit}</span>
                 </FormLabel>
-                <div className="flex items-center gap-4 mt-2">
-                  <FormControl className="flex-1">
+                {/* 🚨 CHANGED: Stacked on mobile (flex-col), side-by-side on desktop (sm:flex-row) */}
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mt-2">
+                  <FormControl className="flex-1 w-full pt-2 sm:pt-0">
                     <Slider value={[field.value]} min={1} max={maxVal} step={1} onValueChange={(val) => field.onChange(val[0])} />
                   </FormControl>
+                  {/* 🚨 CHANGED: Full width dropdown on mobile (w-full), fixed width on desktop (sm:w-32) */}
                   <select
-                    className="w-28 px-3 py-2 rounded-md border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-sm outline-none focus:ring-2 focus:ring-pink-500 cursor-pointer"
+                    className="w-full sm:w-32 px-3 py-2 rounded-md border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-sm outline-none focus:ring-2 focus:ring-pink-500 cursor-pointer"
                     value={unit}
                     onChange={(e) => {
                       const newUnit = e.target.value;

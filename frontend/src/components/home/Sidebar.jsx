@@ -20,15 +20,16 @@ export default function Sidebar({ isOpen, onClose }) {
       />
       
       {/* Sliding Drawer */}
-      <div className={`fixed inset-y-0 left-0 z-[60] w-72 bg-white dark:bg-slate-900 shadow-2xl transform transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}>
-        <div className="p-6 h-full flex flex-col">
+      <div className={`fixed inset-y-0 left-0 z-[60] w-72 max-w-[80vw] bg-white dark:bg-slate-900 shadow-2xl transform transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+        {/* Using h-[100dvh] ensures it fits perfectly on mobile browsers with dynamic URL bars */}
+        <div className="p-6 h-[100dvh] flex flex-col overflow-y-auto">
           <div className="flex items-center justify-between mb-8">
             <span className="text-2xl font-black tracking-tight text-slate-900 dark:text-white">
               ResQ<span className="text-pink-600">Her</span>
             </span>
             <button 
               onClick={onClose}
-              className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
+              className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors cursor-pointer"
             >
               <X size={24} />
             </button>

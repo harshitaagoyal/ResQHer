@@ -22,12 +22,14 @@ export default function AdminIncidentTableRow({
           {incident.name || incident.userName || "Anonymous"}
         </button>
       </td>
-<td className="px-6 py-4 whitespace-nowrap text-slate-600 dark:text-slate-400 font-medium">
-  {incident.createdAt ? new Date(incident.createdAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : 'Unknown'}
-  <div className="text-xs text-slate-400">
-    {incident.createdAt ? new Date(incident.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ''}
-  </div>
-</td>
+      
+      <td className="px-6 py-4 whitespace-nowrap text-slate-600 dark:text-slate-400 font-medium">
+        {incident.createdAt ? new Date(incident.createdAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : 'Unknown'}
+        <div className="text-xs text-slate-400">
+          {incident.createdAt ? new Date(incident.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ''}
+        </div>
+      </td>
+
       <td className="px-6 py-4 text-slate-600 dark:text-slate-400">
         {typeof incident.location === 'object' ? "GPS Logged" : incident.location || "Location Unknown"}
       </td>
@@ -49,8 +51,15 @@ export default function AdminIncidentTableRow({
         </p>
       </td>
 
-      <td className="px-6 py-4 text-slate-600 dark:text-slate-400">
-        {incident.status || "Pending"}
+      {/* 🚨 UPDATED STATUS COLOR CODING */}
+      <td className="px-6 py-4">
+        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold ${
+          incident.status === 'Closed' 
+            ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' 
+            : 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400'
+        }`}>
+          {incident.status || "Pending"}
+        </span>
       </td>
       
       <td className="px-6 py-4 text-center">
@@ -64,7 +73,7 @@ export default function AdminIncidentTableRow({
         )}
       </td>
 
-      <td className="px-6 py-4 text-right relative">
+      <td className="px-6 py-4 text-right relative border-l dark:border-slate-800">
         <button 
           onClick={(e) => { 
             e.stopPropagation(); 
@@ -81,7 +90,6 @@ export default function AdminIncidentTableRow({
             className="absolute right-6 top-10 w-36 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-lg z-50 overflow-hidden text-left animate-in fade-in slide-in-from-top-2"
           >
             <div className="px-4 py-2 text-xs font-bold text-slate-900 dark:text-white border-b dark:border-slate-700">Actions</div>
-            <button onClick={() => { navigator.clipboard.writeText(incident._id); onToggleDropdown(); }} className="w-full text-left px-4 py-2 text-sm text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 cursor-pointer">Copy ID</button>
             <button onClick={() => { onViewDetails(incident); onToggleDropdown(); }} className="w-full text-left px-4 py-2 text-sm text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 border-b dark:border-slate-700 cursor-pointer">View Details</button>
             <button 
               onClick={() => onDelete(incident._id)}

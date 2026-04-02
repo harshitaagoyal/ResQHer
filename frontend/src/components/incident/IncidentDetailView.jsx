@@ -24,18 +24,64 @@ export default function IncidentDetailView({ incident, onBack, onUpdate }) {
   const [isEditingCulpritInfo, setIsEditingCulpritInfo] = useState(false);
   const [isSavingCulpritEdit, setIsSavingCulpritEdit] = useState(false);
 
-  const handleCloseIssueSubmit = async (name, info) => {
-    if (!name || !info) return alert("Please fill in both the Culprit Name and Information.");
-    setIsSubmittingClose(true);
+  // --- REOPEN FUNCTION ---
+  const handleReopen = async () => {
+    const confirmed = window.confirm("Are you sure you want to reopen this case?");
+    if (!confirmed) return;
+
     try {
-      const response = await fetch('/api/close-incident', {
+      const response = await fetch('/api/reopen-incident', {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id: localIncident._id, culpritName: name, culpritInfo: info })
+        body: JSON.stringify({ id: localIncident._id })
       });
 
       if (response.ok) {
-        setLocalIncident({ ...localIncident, status: 'Closed', finalCulpritName: name, finalCulpritInfo: info });
+        setLocalIncident({ ...localIncident, status: 'Pending' });
+        if (onUpdate) onUpdate();
+        alert("Case has been reopened and set to Pending.");
+      } else {
+        alert("Failed to reopen case. Check your API route.");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Something went wrong.");
+    }
+  };
+
+  // --- CLOSE ISSUE FUNCTION ---
+  const handleCloseIssueSubmit = async (name, info, caughtAt, pictureFile) => {
+    if (!name || !info || !caughtAt) return alert("Please fill in the Culprit Name, Information, and Caught Date.");
+    
+    setIsSubmittingClose(true);
+    try {
+      const formData = new FormData();
+      formData.append('id', localIncident._id);
+      formData.append('culpritName', name);
+      formData.append('culpritInfo', info);
+      formData.append('culpritCaughtAt', caughtAt);
+      
+      if (pictureFile) {
+        formData.append('culpritPicture', pictureFile);
+      }
+
+      const response = await fetch('/api/close-incident', {
+        method: 'PATCH',
+        body: formData 
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        
+        setLocalIncident({ 
+          ...localIncident, 
+          status: 'Closed', 
+          finalCulpritName: name, 
+          finalCulpritInfo: info,
+          finalCulpritCaughtAt: caughtAt, 
+          ...(result.finalCulpritPicture && { finalCulpritPicture: result.finalCulpritPicture })
+        });
+        
         setShowCloseModal(false);
         if (onUpdate) onUpdate(); 
       } else {
@@ -49,18 +95,32 @@ export default function IncidentDetailView({ incident, onBack, onUpdate }) {
     }
   };
 
-  const handleSaveCulpritEditSubmit = async (name, info) => {
+  // --- EDIT CULPRIT INFO FUNCTION ---
+  const handleSaveCulpritEditSubmit = async (name, info, caughtAt, pictureFile) => {
     if (!name || !info) return alert("Culprit Name and Information cannot be empty.");
     setIsSavingCulpritEdit(true);
     try {
+      const formData = new FormData();
+      formData.append('id', localIncident._id);
+      formData.append('finalCulpritName', name);
+      formData.append('finalCulpritInfo', info);
+      if (caughtAt) formData.append('finalCulpritCaughtAt', caughtAt);
+      if (pictureFile) formData.append('finalCulpritPicture', pictureFile);
+
       const response = await fetch('/api/update-culprit', {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id: localIncident._id, finalCulpritName: name, finalCulpritInfo: info })
+        body: formData
       });
 
       if (response.ok) {
-        setLocalIncident({ ...localIncident, finalCulpritName: name, finalCulpritInfo: info });
+        const result = await response.json();
+        setLocalIncident({ 
+          ...localIncident, 
+          finalCulpritName: name, 
+          finalCulpritInfo: info,
+          finalCulpritCaughtAt: caughtAt,
+          ...(result.finalCulpritPicture && { finalCulpritPicture: result.finalCulpritPicture })
+        });
         setIsEditingCulpritInfo(false);
         if (onUpdate) onUpdate();
       } else {
@@ -77,17 +137,17 @@ export default function IncidentDetailView({ incident, onBack, onUpdate }) {
   return (
     <div className="space-y-6 animate-in fade-in zoom-in-95 duration-300">
       
+      {/* 🚨 HEADER: onReopen is properly passed here */}
       <IncidentDetailHeader 
         incident={localIncident}
         onBack={onBack}
         onOpenCloseModal={() => setShowCloseModal(true)}
         onOpenCulpritModal={() => { setIsEditingCulpritInfo(false); setShowCulpritInfoModal(true); }}
+        onReopen={handleReopen} 
       />
 
-      {/* 🚨 REARRANGED GRID SYSTEM 🚨 */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         
-        {/* ROW 1: Date (1) + Contact (1) + Status (1) */}
         <IncidentDataCard title="Date & Time Submitted" icon={Calendar} colSpan="col-span-1">
           <p className="text-xl font-bold dark:text-white mb-1">
             {localIncident.createdAt 
@@ -101,9 +161,46 @@ export default function IncidentDetailView({ incident, onBack, onUpdate }) {
           </p>
         </IncidentDataCard>
 
+        {/* Dynamic Contact Card */}
         <IncidentDataCard title="Preferred way of contact" icon={Phone} colSpan="col-span-1">
-          <p className="text-sm text-slate-500 mb-1">{localIncident.preferredContact?.length > 0 ? localIncident.preferredContact.join(', ') : 'Not specified'}</p>
-          <p className="font-medium dark:text-white">{localIncident.phone || localIncident.email || "No details provided"}</p>
+          <p className="text-xs text-slate-500 mb-3 italic">
+            {localIncident.preferredContact?.length > 0 
+              ? `Requested via: ${localIncident.preferredContact.join(', ')}` 
+              : 'No preference set'}
+          </p>
+
+          <div className="flex flex-col gap-3">
+            {localIncident.phone && localIncident.preferredContact?.includes('Phone') && (
+              <a 
+                href={`tel:${localIncident.phone}`}
+                className="inline-flex items-center justify-center px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white rounded-xl text-sm font-bold hover:bg-slate-200 dark:hover:bg-slate-700 transition-all border border-slate-200 dark:border-slate-700 active:scale-95"
+              >
+                Call {localIncident.phone}
+              </a>
+            )}
+
+            {localIncident.phone && localIncident.preferredContact?.includes('Text message') && (
+              <a 
+                href={`sms:${localIncident.phone}`}
+                className="inline-flex items-center justify-center px-4 py-2 bg-white dark:bg-slate-900 text-pink-600 dark:text-pink-400 rounded-xl text-sm font-bold border-2 border-pink-100 dark:border-pink-900/30 hover:bg-pink-50 dark:hover:bg-pink-900/10 transition-all active:scale-95"
+              >
+                Send Message
+              </a>
+            )}
+
+            {localIncident.email && localIncident.preferredContact?.includes('Email') && (
+              <a 
+                href={`mailto:${localIncident.email}`}
+                className="inline-flex items-center justify-center px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white rounded-xl text-sm font-bold hover:bg-slate-200 dark:hover:bg-slate-700 transition-all border border-slate-200 dark:border-slate-700"
+              >
+                Email: {localIncident.email}
+              </a>
+            )}
+
+            {(!localIncident.preferredContact || localIncident.preferredContact.length === 0) && (
+              <p className="text-sm text-slate-400 text-center py-2">No contact method selected.</p>
+            )}
+          </div>
         </IncidentDataCard>
 
         <IncidentDataCard title="Current Status" icon={Activity} colSpan="col-span-1">
@@ -115,9 +212,7 @@ export default function IncidentDetailView({ incident, onBack, onUpdate }) {
           </p>
         </IncidentDataCard>
 
-        {/* ROW 2: Frequency (1) + Situation Summary (2) */}
         <IncidentDataCard title="Duration" icon={Calendar} colSpan="col-span-1">
-          {/* <p className="font-medium dark:text-white">Frequency: {localIncident.frequency || "Not specified"}</p> */}
           {localIncident.occurrenceDuration && (
             <p className="text-sm text-slate-500 mt-1">Duration: {localIncident.occurrenceDuration}</p>
           )}
@@ -129,19 +224,16 @@ export default function IncidentDetailView({ incident, onBack, onUpdate }) {
           </p>
         </IncidentDataCard>
 
-        {/* ROW 3: Initial Culprit details (3) */}
         <IncidentDataCard title="Initial Culprit details" icon={FileText} colSpan="col-span-1 md:col-span-3">
           <p className="font-medium text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
             {localIncident.culprit || localIncident.culprit_description || "Further details withheld for safety."}
           </p>
         </IncidentDataCard>
 
-        {/* ROW 4: Evidence Gallery (3) */}
         <div className="col-span-1 md:col-span-3">
           <IncidentEvidenceGallery attachments={localIncident.attachments} />
         </div>
 
-        {/* ROW 5: Location Map (3) */}
         <div className="p-2 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm col-span-1 md:col-span-3 h-[300px] relative overflow-hidden">
           <div className="absolute top-4 left-6 z-[1] bg-white/90 dark:bg-slate-900/90 p-3 rounded-lg shadow-md backdrop-blur-sm pointer-events-none">
             <h3 className="font-bold text-slate-700 dark:text-slate-300 flex items-center gap-2">
@@ -172,6 +264,7 @@ export default function IncidentDetailView({ incident, onBack, onUpdate }) {
         isSubmitting={isSubmittingClose}
       />
 
+      {/* 🚨 MODAL: onReopen removed from here, properly hooked up to edit data */}
       <IncidentCulpritInfoModal 
         isOpen={showCulpritInfoModal} 
         onClose={() => setShowCulpritInfoModal(false)}

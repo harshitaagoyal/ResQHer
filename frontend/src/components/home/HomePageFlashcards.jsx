@@ -31,45 +31,52 @@ export default function HomePageFlashcards() {
   const IconComponent = currentCard.icon;
 
   return (
-    <div className="relative w-full max-w-md mx-auto select-none p-4">
-      {/* Added dark:bg-slate-900 and dark:border-slate-800 */}
-      <div className="relative overflow-hidden rounded-[3rem] bg-white dark:bg-[#0f172a] aspect-square flex flex-col p-10 shadow-[0_50px_100px_-20px_rgba(237,11,112,0.15)] dark:shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)] border border-transparent dark:border-slate-800 transition-all duration-500 hover:scale-[1.02]">
+    // 🚨 CHANGED: Tightened outer padding for mobile from p-4 to px-2 sm:p-4
+    <div className="relative w-full max-w-md mx-auto select-none px-2 sm:p-4">
+      
+      {/* 🚨 CHANGED: Reduced internal padding on mobile (p-6) vs desktop (sm:p-10), and slightly reduced corner rounding on mobile */}
+      <div className="relative overflow-hidden rounded-[2rem] sm:rounded-[3rem] bg-white dark:bg-[#0f172a] aspect-square flex flex-col p-6 sm:p-10 shadow-[0_50px_100px_-20px_rgba(237,11,112,0.15)] dark:shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)] border border-transparent dark:border-slate-800 transition-all duration-500 hover:scale-[1.02]">
         
-        {/* Floating Icon - Dark Mode adjustment */}
-        <div className="mb-8">
-          <div className="inline-flex p-5 rounded-3xl bg-pink-50 dark:bg-pink-900/20 text-pink-600 dark:text-pink-500 shadow-sm border border-pink-100 dark:border-pink-900/30 transition-all duration-300">
-            <IconComponent size={44} strokeWidth={2} />
+        {/* Floating Icon */}
+        <div className="mb-4 sm:mb-8">
+          {/* 🚨 CHANGED: Smaller icon box on mobile (p-4, size 32) vs desktop (p-5, size 44) */}
+          <div className="inline-flex p-3 sm:p-5 rounded-2xl sm:rounded-3xl bg-pink-50 dark:bg-pink-900/20 text-pink-600 dark:text-pink-500 shadow-sm border border-pink-100 dark:border-pink-900/30 transition-all duration-300">
+            <IconComponent className="w-8 h-8 sm:w-11 sm:h-11" strokeWidth={2} />
           </div>
         </div>
 
-        {/* Content - dark:text-white */}
+        {/* Content */}
         <div className="flex-1">
-          <h3 className="text-3xl font-black text-slate-900 dark:text-white tracking-tighter leading-none mb-4 uppercase">
+          {/* 🚨 CHANGED: Scaled down text for mobile (text-2xl) vs desktop (sm:text-3xl) */}
+          <h3 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tighter leading-tight sm:leading-none mb-2 sm:mb-4 uppercase">
             {currentCard.title}
           </h3>
-          <p className="text-lg font-bold text-slate-500 dark:text-slate-400 leading-relaxed max-w-xs">
+          {/* 🚨 CHANGED: Scaled down description text for mobile (text-base) vs desktop (sm:text-lg) */}
+          <p className="text-base sm:text-lg font-bold text-slate-500 dark:text-slate-400 leading-snug sm:leading-relaxed max-w-xs">
             {currentCard.desc}
           </p>
         </div>
 
         {/* Bottom Nav Section */}
-        <div className="flex items-center justify-between mt-auto">
-          <div className="flex gap-1.5">
+        {/* 🚨 CHANGED: Adjusted top margin to prevent overlapping on very short screens */}
+        <div className="flex items-center justify-between mt-4 sm:mt-auto">
+          
+          <div className="flex gap-1 sm:gap-1.5">
             {flashcardData.map((_, idx) => (
               <div 
                 key={idx} 
                 className={`h-1.5 rounded-full transition-all duration-300 ${
-                  idx === currentIndex ? 'w-8 bg-pink-600' : 'w-2 bg-pink-100 dark:bg-slate-700'
+                  idx === currentIndex ? 'w-6 sm:w-8 bg-pink-600' : 'w-2 bg-pink-100 dark:bg-slate-700'
                 }`} 
               />
             ))}
           </div>
 
-          <div className="flex gap-2">
+          <div className="flex gap-1.5 sm:gap-2">
             <button 
               onClick={prevSlide}
               disabled={currentIndex === 0}
-              className={`p-3 rounded-2xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-lg text-slate-400 dark:text-slate-500 transition-all ${
+              className={`p-2.5 sm:p-3 rounded-xl sm:rounded-2xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-lg text-slate-400 dark:text-slate-500 transition-all cursor-pointer ${
                 currentIndex === 0 ? 'opacity-0 scale-50 pointer-events-none' : 'hover:text-pink-600 dark:hover:text-pink-400 active:scale-95'
               }`}
             >
@@ -78,13 +85,14 @@ export default function HomePageFlashcards() {
             <button 
               onClick={nextSlide}
               disabled={currentIndex === flashcardData.length - 1}
-              className={`p-3 rounded-2xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-lg text-slate-400 dark:text-slate-500 transition-all ${
+              className={`p-2.5 sm:p-3 rounded-xl sm:rounded-2xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-lg text-slate-400 dark:text-slate-500 transition-all cursor-pointer ${
                 currentIndex === flashcardData.length - 1 ? 'opacity-0 scale-50 pointer-events-none' : 'hover:text-pink-600 dark:hover:text-pink-400 active:scale-95'
               }`}
             >
               <ChevronRight size={20} strokeWidth={3} />
             </button>
           </div>
+          
         </div>
       </div>
     </div>

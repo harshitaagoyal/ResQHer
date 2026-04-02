@@ -1,11 +1,15 @@
 'use client';
-import { ArrowLeft, Check, X } from 'lucide-react';
+
+import React from 'react';
+import { Button } from '@/components/ui/button';
+import { ArrowLeft, Check, RotateCcw } from 'lucide-react'; 
 
 export default function IncidentDetailHeader({ 
   incident, 
   onBack, 
   onOpenCloseModal, 
-  onOpenCulpritModal 
+  onOpenCulpritModal,
+  onReopen 
 }) {
   return (
     <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
@@ -22,26 +26,35 @@ export default function IncidentDetailHeader({
       </div>
       
       {incident.status === 'Closed' ? (
-        <div className="flex gap-3 animate-in slide-in-from-right-4 duration-500">
-          <button 
+        <div className="flex items-center gap-2">
+          {/* Culprit Info Button */}
+          <Button 
+            variant="outline" 
             onClick={onOpenCulpritModal}
-            className="bg-white dark:bg-slate-800 border-2 border-blue-600 text-blue-600 dark:text-blue-400 px-4 py-2 rounded-lg font-bold hover:bg-blue-50 dark:hover:bg-blue-900/30 transition shadow-sm cursor-pointer"
+            className="border-blue-600 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 font-bold"
           >
             Culprit Info
-          </button>
-          <button className="bg-green-500 text-white px-4 py-2 rounded-lg font-bold flex items-center gap-2 shadow-sm cursor-default">
-            <Check size={18} /> Issue Closed
-          </button>
+          </Button>
+
+          {/* Reopen Case Toggle Button */}
+          <Button 
+            onClick={onReopen} 
+            className="bg-emerald-500 hover:bg-amber-500 text-white font-bold gap-2 transition-all group"
+            title="Click to Reopen Case"
+          >
+            <Check size={18} className="group-hover:hidden" />
+            <RotateCcw size={18} className="hidden group-hover:block" />
+            <span className="group-hover:hidden">Issue Closed</span>
+            <span className="hidden group-hover:block">Reopen Case?</span>
+          </Button>
         </div>
       ) : (
-        <div className="flex gap-3">
-          <button 
-            onClick={onOpenCloseModal} 
-            className="bg-blue-600 text-white px-4 py-2 rounded-lg font-bold hover:bg-blue-700 transition shadow-sm flex items-center gap-2 cursor-pointer"
-          >
-            <X size={16} /> Close Issue
-          </button>
-        </div>
+        <Button 
+          onClick={onOpenCloseModal}
+          className="bg-pink-600 hover:bg-pink-700 text-white font-bold"
+        >
+          Close Issue
+        </Button>
       )}
     </div>
   );

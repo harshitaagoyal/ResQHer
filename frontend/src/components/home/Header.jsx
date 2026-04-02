@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import HomePageFlashcards from './HomePageFlashcards';
-// 🚨 Only importing what we absolutely need to avoid build errors
+// 🚨 Using useAuth and SignInButton to ensure stability and avoid build errors
 import { useUser, useAuth, SignInButton } from '@clerk/nextjs';
 
 function Header() {
@@ -59,26 +59,28 @@ function Header() {
           </p>
           
           <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-2 w-full sm:w-auto">
-            {/* Always visible */}
-            <Link
-              href="/about-us"
-              className="w-full sm:w-auto text-center bg-pink-600 hover:bg-pink-700 text-white font-bold py-3 px-8 rounded-xl shadow-lg shadow-pink-500/30 transition-all hover:-translate-y-1 text-base"
-            >
-              About Us
-            </Link>
-
-            {/* 🚨 Only shows Login button if user is NOT logged in */}
+            
+            {/* 🚨 LEFT SIDE: Log In / Sign Up (Pink background, white text, hand cursor) */}
             {isLoaded && !isSignedIn && (
               <SignInButton mode="modal">
-                <button className="w-full sm:w-auto text-center bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-900 dark:text-white font-bold py-3 px-8 rounded-xl border border-slate-200 dark:border-slate-700 transition-all hover:-translate-y-1 text-base">
+                <button className="cursor-pointer w-full sm:w-auto text-center bg-pink-600 hover:bg-pink-700 text-white font-bold py-3 px-8 rounded-xl shadow-lg shadow-pink-500/30 transition-all hover:-translate-y-1 text-base">
                   Log In / Sign Up
                 </button>
               </SignInButton>
             )}
+
+            {/* 🚨 RIGHT SIDE: About Us (Gray background, black text, hand cursor) */}
+            <Link
+              href="/about-us"
+              className="cursor-pointer w-full sm:w-auto text-center bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-900 dark:text-white font-bold py-3 px-8 rounded-xl border border-slate-200 dark:border-slate-800 transition-all hover:-translate-y-1 text-base"
+            >
+              About Us
+            </Link>
+
           </div>
         </div>
 
-        {/* Right Side */}
+        {/* Right Side: Visuals */}
         <div className="relative w-full max-w-[320px] sm:max-w-md mx-auto lg:mx-0 lg:ml-auto mt-10 lg:mt-0">
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] h-[110%] bg-gradient-to-tr from-pink-300 to-blue-300 dark:from-pink-900/40 dark:to-blue-900/40 rounded-full blur-3xl opacity-30 -z-10 animate-pulse"></div>
           

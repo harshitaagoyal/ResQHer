@@ -13,37 +13,31 @@ ResQHer transforms a smartphone into a comprehensive, 360-degree security asset 
 1. Nearby Help & Resource Mapping
 
 The Feature: A dynamic, spatial search engine that identifies and filters the closest verified hospitals, police stations, and women’s shelters.
-
 Tech Stack: Google Maps API for spatial rendering, Browser Geolocation API for coordinate tracking, and the Haversine Algorithm for distance calculation.
 
 2. LawBot: AI Legal Advocate
 
 The Feature: An LLM-powered consultant providing instant information on women’s rights and legal procedures, functioning as a 24/7 legal aid assistant.
-
 Tech Stack: Google Gemini 3 Flash for low-latency NLP, Next.js API Routes for serverless backend execution, and React-Markdown for rendering citations.
 
 3. Tactical Exit: Discrete Fake Call
 
 The Feature: A 100% realistic phone call simulation designed to provide users with a believable and safe excuse to exit uncomfortable public situations.
-
 Tech Stack: Native Fullscreen API to bypass browser UI, HTML5 Audio API for ringtone simulation, and Custom React Hooks for call-state management.
 
 4. Trust Circle: Multi-Channel SOS
 
 The Feature: A high-priority emergency system that broadcasts live GPS coordinates and an "Unsafe" status to a pre-configured network of trusted contacts.
-
 Tech Stack: Clerk Metadata API for contact persistence, Node.js/Next.js API Routes for secure signal processing, and Tailwind CSS for emergency UI.
 
 5. TherapyBot: Psychological First Aid
 
 The Feature: A sentiment-aware AI companion engineered to provide immediate emotional de-escalation for users managing trauma or panic.
-
 Tech Stack: Gemini Pro API with empathetic system prompting, Vercel AI SDK for real-time streaming, and React Hooks for state.
 
 6. Secure Incident Vault
 
 The Feature: A structured, encrypted documentation tool for recording incidents of harassment, ensuring a secure digital "paper trail" for legal evidence.
-
 Tech Stack: MongoDB Atlas for NoSQL persistence, Zod Schema Validation for data integrity, and JWT-based Authentication via Clerk.
 
 

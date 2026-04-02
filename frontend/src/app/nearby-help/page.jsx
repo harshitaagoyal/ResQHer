@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { MapPin, ShieldAlert, Hospital, HeartPulse, Pill, Train, Fuel } from 'lucide-react';
-import GpsStatusCard from '@/components/GpsStatusCard';
-import HelpCategoryCard from '@/components/HelpCategoryCard';
+import GpsStatusCard from '@/components/nearbyhelp/GpsStatusCard';
+import HelpCategoryCard from '@/components/nearbyhelp/HelpCategoryCard';
 
 export default function NearbyHelpPage() {
   const [location, setLocation] = useState(null);

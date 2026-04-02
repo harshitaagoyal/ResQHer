@@ -49,7 +49,6 @@ function Header() {
   return (
     <div className="py-8 md:py-12 flex items-center justify-center bg-white dark:bg-[#020617] overflow-hidden">
       <div className="max-w-6xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-10 items-center px-8"> 
-        {/* Left Side: Text and Buttons */}
         <div className="space-y-6 z-10">
           <h1 className="text-4xl lg:text-5xl font-extrabold text-slate-900 dark:text-white leading-[1.15]">
             Empower Your Safety <br className="hidden lg:block" />

@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { useUser } from '@clerk/nextjs';
 import { Radio } from 'lucide-react';
-import axios from 'axios'; // Make sure axios is installed
+import axios from 'axios'; 
 
 export default function AlertButton() {
   const { user } = useUser();
@@ -30,7 +30,6 @@ export default function AlertButton() {
         const { latitude, longitude } = position.coords;
         
         try {
-          // 🚨 2. ACTUALLY SEND DATA TO THE BACKEND API 🚨
           await axios.post('/api/alert', {
             contacts: savedContacts,
             latitude: latitude,

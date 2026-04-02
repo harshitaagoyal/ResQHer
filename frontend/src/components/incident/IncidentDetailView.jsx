@@ -9,7 +9,7 @@ import IncidentDetailHeader from './IncidentDetailHeader';
 import IncidentDataCard from './IncidentDataCard';
 import IncidentEvidenceGallery from './IncidentEvidenceGallery';
 
-const SingleIncidentMap = dynamic(() => import('@/components/SingleIncidentMap'), {
+const SingleIncidentMap = dynamic(() => import('@/components/incident/SingleIncidentMap'), {
   ssr: false,
   loading: () => <div className="h-full w-full bg-slate-200 dark:bg-slate-800 animate-pulse rounded-lg" />
 });

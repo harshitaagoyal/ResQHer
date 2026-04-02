@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { UserButton } from '@clerk/nextjs';
-import { ModeToggle } from '@/components/ModeToggle';
+import { ModeToggle } from '@/components/theme/ModeToggle';
 
 export default function AdminHeader() {
   return (

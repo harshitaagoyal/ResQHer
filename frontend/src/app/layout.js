@@ -1,8 +1,8 @@
 import { ClerkProvider } from '@clerk/nextjs'
 import { Inter } from "next/font/google";
-import { ThemeProvider } from "@/components/theme-provider";
+import { ThemeProvider } from "@/components/theme/theme-provider";
 // 🚨 NEW: Import your Navbar component
-import Navbar from "@/components/Navbar";
+import Navbar from "@/components/home/Navbar";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });

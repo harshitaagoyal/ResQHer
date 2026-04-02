@@ -13,7 +13,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 // Custom Hooks & Components
 import { useTypingText } from '@/hooks/useTypingText';
-import ChatMessage from '@/components/ChatMessage';
+import ChatMessage from '@/components/lawbot/ChatMessage';
 
 const ChatSchema = z.object({
   message: z.string().min(1, 'Message cannot be empty'),

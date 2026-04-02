@@ -6,8 +6,8 @@ import { useUser, SignInButton } from '@clerk/nextjs';
 import { isValidPhoneNumber } from 'react-phone-number-input';
 
 // Custom Components
-import ContactForm from '@/components/ContactForm';
-import ContactItem from '@/components/ContactItem';
+import ContactForm from '@/components/trustcircle/ContactForm';
+import ContactItem from '@/components/trustcircle/ContactItem';
 
 // Styles for PhoneInput
 import 'react-phone-number-input/style.css'; 

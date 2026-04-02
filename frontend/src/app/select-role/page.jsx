@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { SignInButton } from '@clerk/nextjs';
 import { ShieldAlert, UserCircle } from 'lucide-react';
 
-import RoleCard from '@/components/RoleCard';
+import RoleCard from '@/components/login/RoleCard';
 import AdminGatekeeperModal from '@/components/admin/AdminGatekeeperModal';
 
 export default function SelectRole() {

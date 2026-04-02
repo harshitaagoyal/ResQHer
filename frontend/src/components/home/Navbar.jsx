@@ -2,24 +2,22 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation'; // 🚨 ADDED THIS IMPORT
+import { usePathname } from 'next/navigation'; 
 import { useUser, UserButton } from '@clerk/nextjs';
 import { Menu, MapPin, ShieldAlert, X } from 'lucide-react';
 
-// 🚨 IMPORTING OUR NEW CLEAN COMPONENTS 🚨
-import FakeCall from './fakecall/FakeCall'; 
+import FakeCall from '../fakecall/FakeCall'; 
 import Sidebar from './Sidebar';
-import ThemeToggle from './ThemeToggle';
+import ThemeToggle from '../theme/ThemeToggle';
 import AlertButton from './AlertButton';
 
 export default function Navbar() {
   const { user } = useUser();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const pathname = usePathname(); // 🚨 GET THE CURRENT URL PATH
+  const pathname = usePathname(); 
 
-  // 🚨 HIDE NAVBAR ON ADMIN PAGES 🚨
   if (pathname?.startsWith('/admin')) {
-    return null; // Renders absolutely nothing if we are in the admin section
+    return null;
   }
 
   const handleQuickExit = () => {

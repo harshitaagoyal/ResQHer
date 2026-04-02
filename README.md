@@ -38,9 +38,13 @@ Tech Stack: MongoDB Atlas for NoSQL persistence, Zod Schema Validation for data 
 💻 Core Technical Architecture
 
 Framework -> Next.js 16 (App Router) -> Optimized for Server-Side Rendering (SSR) and Client-Side Hydration.
+
 Runtime -> Node.js -> Powering server-side logic, API proxying, and environment security.
+
 Authentication -> Clerk -> End-to-end user identity management and persistent metadata storage.
+
 Database -> MongoDB -> Storing encrypted incident reports and multi-turn AI chat histories.
+
 Styling -> Tailwind CSS -> Implementing a robust Dark Mode architecture and mobile-first design.
 
 Developer

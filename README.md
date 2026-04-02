@@ -1,5 +1,7 @@
 ResQHer: Engineering a Safer Future for Women
 
+Websit is live at : 
+
 The Vision:
 
 ResQHer is a proactive, high-performance safety ecosystem engineered to bridge the gap between immediate physical danger and systemic legal support. 
@@ -47,5 +49,7 @@ Database -> MongoDB -> Storing encrypted incident reports and multi-turn AI chat
 
 Styling -> Tailwind CSS -> Implementing a robust Dark Mode architecture and mobile-first design.
 
-Developer
+
+
+Developer  
 Harshita Goyal

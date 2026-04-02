@@ -2,12 +2,15 @@
 
 import React, { useState, useEffect } from 'react';
 import { ArrowUpDown, ArrowUp, ArrowDown } from "lucide-react";
-import AdminIncidentTableRow from './AdminIncidentTableRow'; // Import the new row component
+import AdminIncidentTableRow from './AdminIncidentTableRow'; 
 
 export default function AdminIncidentTable({ incidents, onViewDetails, onDeleteSuccess }) {
   const [openDropdown, setOpenDropdown] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
-  const [sortDirection, setSortDirection] = useState(null); 
+  
+  // 🚨 UPGRADED SORTING STATE
+  const [sortField, setSortField] = useState('date'); // default to sorting by date
+  const [sortDirection, setSortDirection] = useState('desc'); // newest first
 
   useEffect(() => {
     const closeDropdown = () => setOpenDropdown(null);
@@ -19,22 +22,34 @@ export default function AdminIncidentTable({ incidents, onViewDetails, onDeleteS
     return <div className="text-center p-10 text-slate-500 bg-white dark:bg-slate-900 rounded-xl border dark:border-slate-800">No incidents found matching your criteria.</div>;
   }
 
-  const handleSort = () => {
-    if (sortDirection === null) setSortDirection('desc'); 
-    else if (sortDirection === 'desc') setSortDirection('asc'); 
-    else setSortDirection(null); 
+  const handleSort = (field) => {
+    if (sortField === field) {
+      // Toggle direction if clicking the same field
+      setSortDirection(sortDirection === 'desc' ? 'asc' : 'desc');
+    } else {
+      // Set new field and default to descending
+      setSortField(field);
+      setSortDirection('desc');
+    }
   };
 
   const severityRank = { "Very High": 4, "High": 3, "Medium": 2, "Low": 1 };
 
+  // 🚨 UPGRADED SORTING LOGIC (Handles Date & Severity)
   const sortedIncidents = [...incidents].sort((a, b) => {
-    if (!sortDirection) return 0; 
+    if (sortField === 'severity') {
+      const rankA = severityRank[a.severity || "Medium"] || 0;
+      const rankB = severityRank[b.severity || "Medium"] || 0;
+      return sortDirection === 'desc' ? rankB - rankA : rankA - rankB;
+    } 
     
-    const rankA = severityRank[a.severity || "Medium"] || 0;
-    const rankB = severityRank[b.severity || "Medium"] || 0;
-    
-    if (sortDirection === 'desc') return rankB - rankA;
-    return rankA - rankB;
+    if (sortField === 'date') {
+      const dateA = new Date(a.createdAt || 0).getTime();
+      const dateB = new Date(b.createdAt || 0).getTime();
+      return sortDirection === 'desc' ? dateB - dateA : dateA - dateB;
+    }
+
+    return 0;
   });
 
   const handleDelete = async (id) => {
@@ -63,17 +78,26 @@ export default function AdminIncidentTable({ incidents, onViewDetails, onDeleteS
           <thead className="bg-white dark:bg-slate-900 text-slate-500 border-b border-slate-200 dark:border-slate-800">
             <tr>
               <th className="px-6 py-4 font-medium">S.No</th>
+              
+              {/* 🚨 NEW: DATE COLUMN */}
+              
+
               <th className="px-6 py-4 font-medium">Name</th>
-              <th className="px-6 py-4 font-medium">Location</th>
               <th className="px-6 py-4 font-medium">
-                <button 
-                  onClick={handleSort}
-                  className="flex items-center gap-1 hover:text-slate-900 dark:hover:text-white transition-colors outline-none cursor-pointer"
-                >
-                  Severity 
-                  {sortDirection === 'desc' ? <ArrowDown size={14} /> : sortDirection === 'asc' ? <ArrowUp size={14} /> : <ArrowUpDown size={14} className="opacity-50" />}
+                <button onClick={() => handleSort('date')} className="flex items-center gap-1 hover:text-slate-900 dark:hover:text-white transition-colors outline-none cursor-pointer">
+                  Date {sortField === 'date' && (sortDirection === 'desc' ? <ArrowDown size={14} /> : <ArrowUp size={14} />)}
+                  {sortField !== 'date' && <ArrowUpDown size={14} className="opacity-50" />}
                 </button>
               </th>
+              <th className="px-6 py-4 font-medium">Location</th>
+              
+              <th className="px-6 py-4 font-medium">
+                <button onClick={() => handleSort('severity')} className="flex items-center gap-1 hover:text-slate-900 dark:hover:text-white transition-colors outline-none cursor-pointer">
+                  Severity {sortField === 'severity' && (sortDirection === 'desc' ? <ArrowDown size={14} /> : <ArrowUp size={14} />)}
+                  {sortField !== 'severity' && <ArrowUpDown size={14} className="opacity-50" />}
+                </button>
+              </th>
+              
               <th className="px-6 py-4 font-medium text-center">Issue</th>
               <th className="px-6 py-4 font-medium">Status</th>
               <th className="px-6 py-4 font-medium text-center">Evidence</th>

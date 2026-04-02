@@ -22,7 +22,12 @@ export default function AdminIncidentTableRow({
           {incident.name || incident.userName || "Anonymous"}
         </button>
       </td>
-
+<td className="px-6 py-4 whitespace-nowrap text-slate-600 dark:text-slate-400 font-medium">
+  {incident.createdAt ? new Date(incident.createdAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : 'Unknown'}
+  <div className="text-xs text-slate-400">
+    {incident.createdAt ? new Date(incident.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ''}
+  </div>
+</td>
       <td className="px-6 py-4 text-slate-600 dark:text-slate-400">
         {typeof incident.location === 'object' ? "GPS Logged" : incident.location || "Location Unknown"}
       </td>

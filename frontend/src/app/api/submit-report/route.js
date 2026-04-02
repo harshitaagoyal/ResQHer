@@ -3,61 +3,86 @@ import clientPromise from '@/lib/mongodb';
 
 export async function POST(request) {
   try {
-    // 1. Unpack the incoming FormData
     const formData = await request.formData();
 
-    // 2. Extract and format the text fields
     const name = formData.get('name');
     const email = formData.get('email');
     const phone = formData.get('phone');
     const locationLat = parseFloat(formData.get('locationLat')) || 0;
     const locationLng = parseFloat(formData.get('locationLng')) || 0;
     const occurrenceDuration = formData.get('occurrenceDuration');
-    const preferredContact = JSON.parse(formData.get('preferredContact') || '[]');
     const currentSituation = formData.get('currentSituation');
     const culprit = formData.get('culprit');
     const severity = formData.get('severity');
     const status = formData.get('status') || 'Pending';
 
-    // (Note: To handle the image 'attachments', you would typically upload them 
-    // to a service like Cloudinary or AWS S3 here and save their URLs to the DB. 
-    // For this step, we are focusing on getting your core data to the dashboard!)
+    // Safely parse the contact array
+    let preferredContact = [];
+    try {
+      const rawContact = formData.get('preferredContact');
+      if (rawContact) preferredContact = JSON.parse(rawContact);
+    } catch (e) {
+      console.log("Failed to parse preferredContact");
+    }
 
-    // 3. Connect to MongoDB
+    // 🚨 UPGRADED: BULLETPROOF FILE EXTRACTOR 🚨
+    const attachmentsData = [];
+    
+    // We loop through EVERY item in the formData manually
+    for (const [key, value] of formData.entries()) {
+      
+      // If it's named 'attachments' and it's a file (has an arrayBuffer function)
+      if (key === 'attachments' && value && typeof value === 'object' && typeof value.arrayBuffer === 'function') {
+        try {
+          const bytes = await value.arrayBuffer();
+          
+          // Make sure the file actually contains data
+          if (bytes.byteLength > 0) {
+            const buffer = Buffer.from(bytes);
+            const base64String = buffer.toString('base64');
+            const mimeType = value.type || 'image/jpeg';
+            
+            attachmentsData.push({
+              name: value.name || 'evidence-file',
+              // This is the magic string that lets the browser render the image
+              url: `data:${mimeType};base64,${base64String}` 
+            });
+          }
+        } catch (fileErr) {
+          console.error("Error processing an individual file:", fileErr);
+        }
+      }
+    }
+
     const client = await clientPromise;
-    const db = client.db("SheBuilds"); // Matches your get-incidents database
+    const db = client.db("SheBuilds");
 
-    // 4. Construct the exact document structure your Admin Dashboard expects
     const newIncident = {
       name,
       email,
       phone,
-      location: {
-        lat: locationLat,
-        lng: locationLng
-      },
+      location: { lat: locationLat, lng: locationLng },
       occurrenceDuration,
       preferredContact,
       currentSituation,
       culprit,
       severity,
       status,
-      createdAt: new Date(), // Good practice to timestamp reports!
+      attachments: attachmentsData, // 🚨 Now safely contains your encoded images!
+      createdAt: new Date(),
     };
 
-    // 5. Save it to the collection
     const result = await db.collection("complains2").insertOne(newIncident);
 
-    // 6. Tell the frontend it was a success!
     return NextResponse.json(
-      { success: true, message: "Report saved successfully!", id: result.insertedId },
+      { success: true, message: "Report saved!", id: result.insertedId },
       { status: 201 }
     );
 
   } catch (error) {
-    console.error("Error saving report to MongoDB:", error);
+    console.error("BACKEND CRASH:", error);
     return NextResponse.json(
-      { error: "Failed to save the report to the database." },
+      { error: "Server crashed", details: error.message },
       { status: 500 }
     );
   }

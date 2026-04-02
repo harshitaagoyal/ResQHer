@@ -84,44 +84,64 @@ export default function IncidentDetailView({ incident, onBack, onUpdate }) {
         onOpenCulpritModal={() => { setIsEditingCulpritInfo(false); setShowCulpritInfoModal(true); }}
       />
 
+      {/* 🚨 REARRANGED GRID SYSTEM 🚨 */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         
-        <IncidentDataCard title="Preferred way of contact" icon={Phone}>
+        {/* ROW 1: Date (1) + Contact (1) + Status (1) */}
+        <IncidentDataCard title="Date & Time Submitted" icon={Calendar} colSpan="col-span-1">
+          <p className="text-xl font-bold dark:text-white mb-1">
+            {localIncident.createdAt 
+              ? new Date(localIncident.createdAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }) 
+              : "Date Unknown"}
+          </p>
+          <p className="text-sm text-slate-500 font-medium">
+            {localIncident.createdAt 
+              ? new Date(localIncident.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) 
+              : "Time Unknown"}
+          </p>
+        </IncidentDataCard>
+
+        <IncidentDataCard title="Preferred way of contact" icon={Phone} colSpan="col-span-1">
           <p className="text-sm text-slate-500 mb-1">{localIncident.preferredContact?.length > 0 ? localIncident.preferredContact.join(', ') : 'Not specified'}</p>
           <p className="font-medium dark:text-white">{localIncident.phone || localIncident.email || "No details provided"}</p>
         </IncidentDataCard>
 
-        <IncidentDataCard title="Frequency & Duration" icon={Calendar}>
-          <p className="font-medium dark:text-white">Frequency: {localIncident.frequency || "Not specified"}</p>
+        <IncidentDataCard title="Current Status" icon={Activity} colSpan="col-span-1">
+          <p className={`font-bold uppercase mb-2 ${localIncident.status === 'Closed' ? 'text-green-500' : 'text-pink-600'}`}>
+            {localIncident.status || "Pending"}
+          </p>
+          <p className="text-xs text-slate-500">
+            {localIncident.status === 'Closed' ? "Case resolved." : "Action required."}
+          </p>
+        </IncidentDataCard>
+
+        {/* ROW 2: Frequency (1) + Situation Summary (2) */}
+        <IncidentDataCard title="Duration" icon={Calendar} colSpan="col-span-1">
+          {/* <p className="font-medium dark:text-white">Frequency: {localIncident.frequency || "Not specified"}</p> */}
           {localIncident.occurrenceDuration && (
             <p className="text-sm text-slate-500 mt-1">Duration: {localIncident.occurrenceDuration}</p>
           )}
         </IncidentDataCard>
 
-        <IncidentDataCard title="Situation Summary" icon={User}>
+        <IncidentDataCard title="Situation Summary" icon={User} colSpan="col-span-1 md:col-span-2">
           <p className="font-medium dark:text-white text-sm leading-relaxed max-h-32 overflow-y-auto pr-2 custom-scrollbar">
             {localIncident.currentSituation || localIncident.ai_summary || localIncident.other_info || "No details provided."}
           </p>
         </IncidentDataCard>
 
-        <IncidentDataCard title="Initial Culprit details" icon={FileText} colSpan="col-span-1 md:col-span-2">
+        {/* ROW 3: Initial Culprit details (3) */}
+        <IncidentDataCard title="Initial Culprit details" icon={FileText} colSpan="col-span-1 md:col-span-3">
           <p className="font-medium text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
             {localIncident.culprit || localIncident.culprit_description || "Further details withheld for safety."}
           </p>
         </IncidentDataCard>
 
-        <IncidentDataCard title="Current Status" icon={Activity}>
-          <p className={`font-bold uppercase mb-2 ${localIncident.status === 'Closed' ? 'text-green-500' : 'text-pink-600'}`}>
-            {localIncident.status || "Pending"}
-          </p>
-          <p className="text-xs text-slate-500">
-            {localIncident.status === 'Closed' ? "This case has been resolved and closed." : "Resolve this issue by contacting the person and providing necessary aid."}
-          </p>
-        </IncidentDataCard>
+        {/* ROW 4: Evidence Gallery (3) */}
+        <div className="col-span-1 md:col-span-3">
+          <IncidentEvidenceGallery attachments={localIncident.attachments} />
+        </div>
 
-        <IncidentEvidenceGallery attachments={localIncident.attachments} />
-
-        {/* Location Map */}
+        {/* ROW 5: Location Map (3) */}
         <div className="p-2 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm col-span-1 md:col-span-3 h-[300px] relative overflow-hidden">
           <div className="absolute top-4 left-6 z-[1] bg-white/90 dark:bg-slate-900/90 p-3 rounded-lg shadow-md backdrop-blur-sm pointer-events-none">
             <h3 className="font-bold text-slate-700 dark:text-slate-300 flex items-center gap-2">

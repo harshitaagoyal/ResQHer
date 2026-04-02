@@ -1,35 +1,36 @@
 'use client';
-import React from 'react';
+
+import React, { useEffect } from 'react';
 import { MapContainer, TileLayer, Marker } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 
-// Red pin icon for the emergency location
-const customIcon = new L.Icon({
-  iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
-  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
+// Fix for default marker icons occasionally breaking in Next.js
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
+  iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
+  shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
 });
 
 export default function SingleIncidentMap({ lat, lng }) {
-  if (!lat || !lng) return null;
-
   const position = [lat, lng];
 
   return (
-    <MapContainer
-      center={position}
-      zoom={14}
-      style={{ height: '100%', width: '100%', zIndex: 0 }}
-      zoomControl={false} // Hides the +/- buttons for a cleaner look
-      dragging={false}    // Prevents accidental scrolling on the map
+    // 🚨 THE FIX: Adding a unique key forces React to fully rebuild the map on re-renders, 
+    // completely preventing the "reused by another instance" crash!
+    <MapContainer 
+      key={`${lat}-${lng}-${new Date().getTime()}`} 
+      center={position} 
+      zoom={14} 
+      scrollWheelZoom={false} 
+      className="w-full h-full z-0 relative"
     >
       <TileLayer
-        url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      <Marker position={position} icon={customIcon} />
+      <Marker position={position} />
     </MapContainer>
   );
 }

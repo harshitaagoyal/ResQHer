@@ -57,12 +57,20 @@ const lipSyncMessage = async (message) => {
   await execCommand(`"${ffmpegStatic}" -y -i "${mp3Path}" "${wavPath}"`);
   console.log(`Conversion done in ${new Date().getTime() - time}ms`);
 
-  // Generate Lip Sync using rhubarb
-  const rhubarbPath = path.join(__dirname, 'rhubarb', 'rhubarb.exe');
-  await execCommand(
-    `"${rhubarbPath}" -f json -o "${jsonPath}" "${wavPath}" -r phonetic`
-  );
-  console.log(`Lip sync done in ${new Date().getTime() - time}ms`);
+  // Only run rhubarb on Windows
+  const isWindows = process.platform === 'win32';
+  if (isWindows) {
+    const rhubarbPath = path.join(__dirname, 'rhubarb', 'rhubarb.exe');
+    await execCommand(
+      `"${rhubarbPath}" -f json -o "${jsonPath}" "${wavPath}" -r phonetic`
+    );
+    console.log(`Lip sync done in ${new Date().getTime() - time}ms`);
+  } else {
+    // On Linux, write a dummy lipsync file
+    const dummyLipsync = { mouthCues: [] };
+    await fs.writeFile(jsonPath, JSON.stringify(dummyLipsync));
+    console.log(`Skipped rhubarb on Linux, dummy lipsync written`);
+  }
 };
 
 // Helper: sleep

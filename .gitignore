@@ -1,4 +1,7 @@
-backend/.env
-frontend/.env.local
-frontend/node_modules
-node_modules
+node_modules/
+.env
+.env.local
+.DS_Store
+.next/
+dist/
+*.exe

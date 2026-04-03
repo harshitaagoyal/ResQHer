@@ -1,6 +1,6 @@
 // TODO: Add component logic
 import { NextResponse } from 'next/server';
-import Jimp from 'jimp';
+import { Jimp } from 'jimp';
 
 export async function POST(req) {
   try {

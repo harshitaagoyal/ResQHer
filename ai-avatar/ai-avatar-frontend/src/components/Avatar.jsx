@@ -108,7 +108,7 @@ let setupMode = false;
 
 export function Avatar(props) {
   const { nodes, materials, scene } = useGLTF(
-    '/avatar/models/6732180e5415f67e067badca.glb'
+    '/models/6732180e5415f67e067badca.glb'
   );
 
   const { message, onMessagePlayed, chat } = useChat();
@@ -130,7 +130,7 @@ export function Avatar(props) {
     audio.onended = onMessagePlayed;
   }, [message]);
 
-  const { animations } = useGLTF('/avatar/models/animations.glb');
+  const { animations } = useGLTF('/models/animations.glb');
 
   const group = useRef();
   const { actions, mixer } = useAnimations(animations, group);
@@ -374,5 +374,5 @@ export function Avatar(props) {
   );
 }
 
-useGLTF.preload('/avatar/models/64f1a714fe61576b46f27ca2.glb');
-useGLTF.preload('/avatar/models/animations.glb');
+useGLTF.preload('/models/64f1a714fe61576b46f27ca2.glb');
+useGLTF.preload('/models/animations.glb');

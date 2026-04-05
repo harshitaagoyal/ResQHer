@@ -4,7 +4,6 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 
-// Fix for default Leaflet icons not showing in Next.js
 const customIcon = new L.Icon({
   iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
   shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
@@ -20,7 +19,6 @@ const urgentIcon = new L.Icon({
 });
 
 export default function IncidentMap({ incidents }) {
-  // Default center: Dhanbad/Jharkhand coordinates
   const center = [23.6693, 86.1511];
 
   return (
@@ -30,7 +28,6 @@ export default function IncidentMap({ incidents }) {
         zoom={10} 
         style={{ height: '100%', width: '100%' }}
       >
-        {/* Dark Mode Map Tiles */}
         <TileLayer
           url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'

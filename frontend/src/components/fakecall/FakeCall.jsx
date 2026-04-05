@@ -43,7 +43,6 @@ export default function FakeCall() {
 
   return (
     <>
-      {/* 🚨 1. THE NAVBAR BUTTON 🚨 */}
       {fakeCallStatus === 'counting' ? (
         <button 
           onClick={cancelFakeCall}
@@ -63,7 +62,6 @@ export default function FakeCall() {
         </button>
       )}
 
-      {/* 🚨 2. THE MODALS (Teleported) 🚨 */}
       {mounted && createPortal(
         <>
           {fakeCallStatus === 'configuring' && (

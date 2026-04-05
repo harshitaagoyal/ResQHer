@@ -1,7 +1,6 @@
 import { ClerkProvider } from '@clerk/nextjs'
 import { Inter } from "next/font/google";
 import { ThemeProvider } from "@/components/theme/theme-provider";
-// 🚨 NEW: Import your Navbar component
 import Navbar from "@/components/home/Navbar";
 import "./globals.css";
 
@@ -23,10 +22,8 @@ export default function RootLayout({ children }) {
             enableSystem
             disableTransitionOnChange
           >
-            {/* 🚨 NEW: The Navbar is now locked at the top of the entire application */}
             <Navbar />
             
-            {/* The individual pages will load inside this main container below the Navbar */}
             <main>
               {children}
             </main>

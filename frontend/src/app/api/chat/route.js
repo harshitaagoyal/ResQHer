@@ -20,9 +20,6 @@ export async function POST(req) {
       return NextResponse.json({ error: 'Message is required' }, { status: 400 });
     }
 
-    // ==========================================
-    // PATH A: LAW BOT (Next.js + Gemini + MongoDB)
-    // ==========================================
     if (mode === 'lawbot') {
       const { userId } = await auth();
       if (!userId) {
@@ -50,11 +47,9 @@ export async function POST(req) {
           }
         } catch (err) {
           console.error('Invalid chatId or chat not found:', err);
-          // Continue — will create a new chat below
         }
       }
 
-      // Setup Gemini
       const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
       const model = genAI.getGenerativeModel({
         model: 'gemini-2.5-flash',
@@ -73,7 +68,6 @@ export async function POST(req) {
       const aiMessageObj = { text: aiReply, isUser: false, timestamp: new Date() };
 
       if (chatId && chatDoc) {
-        // Append to existing chat
         await chatsCollection.updateOne(
           { _id: new ObjectId(chatId) },
           {
@@ -94,17 +88,12 @@ export async function POST(req) {
         };
         const insertResult = await chatsCollection.insertOne(newChat);
 
-        // FIX: Convert ObjectId to plain string before sending in JSON response
         return NextResponse.json({
           reply: aiReply,
           newChatId: insertResult.insertedId.toString(),
         });
       }
     }
-
-    // ==========================================
-    // PATH B: EXISTING FEATURES (Proxy to Express)
-    // ==========================================
     const payload = { message, history, mode };
 
     const backendResponse = await fetch(`${BACKEND_URL}/api/chat`, {

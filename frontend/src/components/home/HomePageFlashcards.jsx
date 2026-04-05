@@ -31,34 +31,22 @@ export default function HomePageFlashcards() {
   const IconComponent = currentCard.icon;
 
   return (
-    // 🚨 CHANGED: Tightened outer padding for mobile from p-4 to px-2 sm:p-4
     <div className="relative w-full max-w-md mx-auto select-none px-2 sm:p-4">
       
-      {/* 🚨 CHANGED: Reduced internal padding on mobile (p-6) vs desktop (sm:p-10), and slightly reduced corner rounding on mobile */}
       <div className="relative overflow-hidden rounded-[2rem] sm:rounded-[3rem] bg-white dark:bg-[#0f172a] aspect-square flex flex-col p-6 sm:p-10 shadow-[0_50px_100px_-20px_rgba(237,11,112,0.15)] dark:shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)] border border-transparent dark:border-slate-800 transition-all duration-500 hover:scale-[1.02]">
-        
-        {/* Floating Icon */}
         <div className="mb-4 sm:mb-8">
-          {/* 🚨 CHANGED: Smaller icon box on mobile (p-4, size 32) vs desktop (p-5, size 44) */}
           <div className="inline-flex p-3 sm:p-5 rounded-2xl sm:rounded-3xl bg-pink-50 dark:bg-pink-900/20 text-pink-600 dark:text-pink-500 shadow-sm border border-pink-100 dark:border-pink-900/30 transition-all duration-300">
             <IconComponent className="w-8 h-8 sm:w-11 sm:h-11" strokeWidth={2} />
           </div>
         </div>
-
-        {/* Content */}
         <div className="flex-1">
-          {/* 🚨 CHANGED: Scaled down text for mobile (text-2xl) vs desktop (sm:text-3xl) */}
           <h3 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tighter leading-tight sm:leading-none mb-2 sm:mb-4 uppercase">
             {currentCard.title}
           </h3>
-          {/* 🚨 CHANGED: Scaled down description text for mobile (text-base) vs desktop (sm:text-lg) */}
           <p className="text-base sm:text-lg font-bold text-slate-500 dark:text-slate-400 leading-snug sm:leading-relaxed max-w-xs">
             {currentCard.desc}
           </p>
         </div>
-
-        {/* Bottom Nav Section */}
-        {/* 🚨 CHANGED: Adjusted top margin to prevent overlapping on very short screens */}
         <div className="flex items-center justify-between mt-4 sm:mt-auto">
           
           <div className="flex gap-1 sm:gap-1.5">

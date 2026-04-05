@@ -10,14 +10,8 @@ export async function POST(req) {
 
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
-
-    // Parse PNG manually to extract pixel data
-    // PNG signature is 8 bytes, then chunks follow
-    // We'll use a simple approach - extract raw pixel bits from buffer
     let binaryText = "";
-    
-    // Skip PNG header and look for IDAT chunks with pixel data
-    // Simple LSB extraction from buffer bytes
+
     for (let i = 8; i < buffer.length; i++) {
       binaryText += (buffer[i] & 1).toString();
       

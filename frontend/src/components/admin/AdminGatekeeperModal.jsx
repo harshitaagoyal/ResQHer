@@ -7,8 +7,6 @@ export default function AdminGatekeeperModal({ onClose }) {
   const [adminKey, setAdminKey] = useState('');
   const [keyError, setKeyError] = useState(false);
   const [isKeyVerified, setIsKeyVerified] = useState(false);
-
-  // Note: Ensure this matches your environment setup
   const MASTER_ADMIN_KEY = "RESQ-AUTH-2026"; 
 
   const handleVerifyKey = (e) => {
@@ -26,15 +24,12 @@ export default function AdminGatekeeperModal({ onClose }) {
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
       <div className="bg-white dark:bg-slate-900 w-full max-w-md rounded-3xl p-8 shadow-2xl border border-slate-200 dark:border-slate-800 relative">
         
-        {/* Close Button */}
         <button 
           onClick={onClose}
           className="absolute top-6 right-6 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
         >
           <X size={24} />
         </button>
-
-        {/* Modal Header */}
         <div className="flex flex-col items-center text-center mb-8">
           <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-4 transition-colors ${isKeyVerified ? 'bg-green-100 text-green-600' : 'bg-indigo-100 text-indigo-600'}`}>
             {isKeyVerified ? <CheckCircle2 size={32} /> : <Lock size={32} />}
@@ -48,8 +43,6 @@ export default function AdminGatekeeperModal({ onClose }) {
               : "Please enter the master Authority Access Key to continue."}
           </p>
         </div>
-
-        {/* Form Logic */}
         {!isKeyVerified ? (
           <form onSubmit={handleVerifyKey} className="space-y-4">
             <div>

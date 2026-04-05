@@ -4,12 +4,8 @@ import React, { useState, useEffect } from 'react';
 import { HeartHandshake } from 'lucide-react';
 import { useUser, SignInButton } from '@clerk/nextjs';
 import { isValidPhoneNumber } from 'react-phone-number-input';
-
-// Custom Components
 import ContactForm from '@/components/trustcircle/ContactForm';
 import ContactItem from '@/components/trustcircle/ContactItem';
-
-// Styles for PhoneInput
 import 'react-phone-number-input/style.css'; 
 
 export default function EmergencyContactsPage() {
@@ -54,7 +50,6 @@ export default function EmergencyContactsPage() {
     }
   };
 
-  // Create
   const addContact = (e) => {
     e.preventDefault();
     if (!name.trim() || !phone || !email.trim()) return;
@@ -66,20 +61,15 @@ export default function EmergencyContactsPage() {
 
     const newContact = { id: Date.now(), name, phone, email };
     saveContacts([...contacts, newContact]);
-    
-    // Reset Form
     setName(''); 
     setPhone(''); 
     setEmail('');
   };
-
-  // Delete
   const deleteContact = (id) => {
     const filtered = contacts.filter(c => c.id !== id);
     saveContacts(filtered);
   };
 
-  // Edit Logic
   const startEditing = (contact) => {
     setEditingId(contact.id);
     setEditName(contact.name);
@@ -103,7 +93,6 @@ export default function EmergencyContactsPage() {
 
   if (!isLoaded) return null;
 
-  // Auth Guard UI
   if (!isSignedIn) {
     return (
       <div className="min-h-[70vh] flex items-center justify-center bg-white dark:bg-[#020617] px-6">
@@ -124,7 +113,6 @@ export default function EmergencyContactsPage() {
     <div className="min-h-[calc(100vh-4rem)] bg-white dark:bg-[#020617] pt-4 pb-10 px-6 font-sans">
       <div className="max-w-4xl mx-auto space-y-6">
         
-        {/* Header Section */}
         <div className="text-center">
           <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-pink-50 dark:bg-pink-900/10 text-pink-600 dark:text-pink-400 mb-3 border border-pink-100 dark:border-pink-900/30 shadow-sm">
             <HeartHandshake size={28} />
@@ -136,16 +124,12 @@ export default function EmergencyContactsPage() {
             Add contacts to receive your GPS location during emergencies.
           </p>
         </div>
-
-        {/* Add Contact Component */}
         <ContactForm 
           name={name} setName={setName}
           phone={phone} setPhone={setPhone}
           email={email} setEmail={setEmail}
           onSubmit={addContact}
         />
-
-        {/* Contacts List Section */}
         <div className="bg-white dark:bg-slate-900 p-5 sm:p-6 rounded-[1.5rem] border border-slate-100 dark:border-slate-800/50 shadow-md">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-bold text-slate-900 dark:text-white">Contacts ({contacts.length})</h2>

@@ -1,5 +1,3 @@
-// services/prompts.js
-
 module.exports = {
   // 1. Converts form data into a formal, urgent report for authorities.
   USER_POST_TEXT_EXPANSION_PROMPT: `

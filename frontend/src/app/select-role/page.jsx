@@ -14,7 +14,6 @@ export default function SelectRole() {
     <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-[#020617] p-6 relative">
       <div className="max-w-4xl w-full grid grid-cols-1 md:grid-cols-2 gap-8">
         
-        {/* User Login Card */}
         <SignInButton mode="modal" fallbackRedirectUrl="/">
           <div className="w-full h-full"> 
             <RoleCard 
@@ -26,8 +25,6 @@ export default function SelectRole() {
             />
           </div>
         </SignInButton>
-
-        {/* Authority Login Card */}
         <RoleCard 
           icon={<ShieldAlert size={40} />}
           title="Authority Portal"
@@ -38,8 +35,6 @@ export default function SelectRole() {
         />
 
       </div>
-
-      {/* Admin Gatekeeper Modal */}
       {showAdminModal && (
         <AdminGatekeeperModal onClose={() => setShowAdminModal(false)} />
       )}

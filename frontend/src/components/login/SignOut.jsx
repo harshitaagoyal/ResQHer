@@ -1,4 +1,3 @@
-// TODO: Add component logic
 'use client'
 import { UserButton } from "@clerk/nextjs";
 

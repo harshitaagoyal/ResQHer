@@ -4,8 +4,6 @@ import React, { useEffect } from 'react';
 import { MapContainer, TileLayer, Marker } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
-
-// Fix for default marker icons occasionally breaking in Next.js
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
@@ -17,8 +15,6 @@ export default function SingleIncidentMap({ lat, lng }) {
   const position = [lat, lng];
 
   return (
-    // 🚨 THE FIX: Adding a unique key forces React to fully rebuild the map on re-renders, 
-    // completely preventing the "reused by another instance" crash!
     <MapContainer 
       key={`${lat}-${lng}-${new Date().getTime()}`} 
       center={position} 

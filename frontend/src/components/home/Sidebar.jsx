@@ -13,15 +13,12 @@ export default function Sidebar({ isOpen, onClose }) {
 
   return (
     <>
-      {/* Background Overlay */}
       <div 
         className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 transition-opacity"
         onClick={onClose}
       />
       
-      {/* Sliding Drawer */}
       <div className={`fixed inset-y-0 left-0 z-[60] w-72 max-w-[80vw] bg-white dark:bg-slate-900 shadow-2xl transform transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}>
-        {/* Using h-[100dvh] ensures it fits perfectly on mobile browsers with dynamic URL bars */}
         <div className="p-6 h-[100dvh] flex flex-col overflow-y-auto">
           <div className="flex items-center justify-between mb-8">
             <span className="text-2xl font-black tracking-tight text-slate-900 dark:text-white">

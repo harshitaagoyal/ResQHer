@@ -31,7 +31,7 @@ const promptSuggestions = [
 export default function LawbotPage() {
   const [messages, setMessages] = useState([]);
   const [isThinking, setIsThinking] = useState(false);
-  const [isLoadingChat, setIsLoadingChat] = useState(false); // FIX: tracks when loading an existing chat
+  const [isLoadingChat, setIsLoadingChat] = useState(false); 
   const [chats, setChats] = useState([]);
   const [activeChatId, setActiveChatId] = useState(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -64,7 +64,7 @@ export default function LawbotPage() {
     setActiveChatId(chatId);
     setIsSidebarOpen(false);
     setMessages([]);
-    setIsLoadingChat(true); // FIX: set loading true before fetch so welcome screen doesn't flash
+    setIsLoadingChat(true); 
 
     try {
       const res = await fetch(`/api/lawbot/history/${chatId}`);
@@ -77,7 +77,7 @@ export default function LawbotPage() {
     } catch (error) {
       console.error('Failed to load messages', error);
     } finally {
-      setIsLoadingChat(false); // FIX: always clear loading when done
+      setIsLoadingChat(false); 
     }
   };
 
@@ -183,11 +183,6 @@ export default function LawbotPage() {
       </div>
     </form>
   );
-
-  // FIX: Three clearly separated UI states
-  // 1. showWelcomeScreen — no active chat, no messages, not loading
-  // 2. isLoadingChat     — fetching messages for an existing chat
-  // 3. showChatArea      — messages are loaded and ready to display
   const showWelcomeScreen = !activeChatId && messages.length === 0 && !isLoadingChat;
   const showChatArea = !isLoadingChat && (messages.length > 0 || activeChatId);
 
@@ -201,7 +196,6 @@ export default function LawbotPage() {
   return (
     <div className="flex h-[calc(100vh-4rem)] bg-white dark:bg-[#020617] overflow-hidden">
 
-      {/* SIDEBAR */}
       <div
         className={`fixed md:relative z-20 h-full w-72 bg-slate-50 dark:bg-[#0f172a] border-r border-slate-200 dark:border-slate-800 flex flex-col transition-transform duration-300 ${
           isSidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
@@ -262,11 +256,8 @@ export default function LawbotPage() {
           )}
         </div>
       </div>
-
-      {/* MAIN CHAT AREA */}
       <div className="flex-1 flex flex-col h-full relative w-full">
 
-        {/* Mobile Header */}
         <div className="md:hidden p-4 border-b border-slate-100 dark:border-slate-800 flex items-center bg-white/80 dark:bg-[#020617]/80 backdrop-blur-md sticky top-0 z-10">
           <button
             onClick={() => setIsSidebarOpen(true)}
@@ -278,15 +269,12 @@ export default function LawbotPage() {
             {activeChatId ? chats.find((c) => c._id === activeChatId)?.title : 'New Chat'}
           </span>
         </div>
-
-        {/* STATE 1: Loading an existing chat */}
         {isLoadingChat && (
           <div className="flex-1 flex items-center justify-center">
             <Loader2 className="animate-spin text-pink-600 h-8 w-8" />
           </div>
         )}
 
-        {/* STATE 2: Welcome screen for a brand new chat */}
         {showWelcomeScreen && (
           <div className="flex-1 w-full max-w-3xl mx-auto flex flex-col items-center justify-center p-4">
             <h1 className="text-2xl sm:text-3xl font-extrabold tracking-wide text-gray-700 dark:text-white mb-8 text-center">
@@ -306,8 +294,6 @@ export default function LawbotPage() {
             </div>
           </div>
         )}
-
-        {/* STATE 3: Chat messages loaded and ready */}
         {showChatArea && (
           <div className="flex flex-col h-full items-center justify-between max-w-4xl w-full mx-auto">
             <div className="w-full overflow-y-auto custom-scrollbar flex-1 p-4 pb-2 space-y-6">

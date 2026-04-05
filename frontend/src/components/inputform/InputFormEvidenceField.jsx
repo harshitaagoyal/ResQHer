@@ -16,7 +16,6 @@ export default function InputFormEvidenceField({ attachments, setAttachments }) 
   return (
     <div className="space-y-3 pt-2">
       <FormLabel className="text-base font-semibold">Attach Evidence (Photos)</FormLabel>
-      {/* 🚨 Polished: Adjusted padding for mobile (p-4) vs desktop (sm:p-6) */}
       <div className="border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-xl p-4 sm:p-6 flex flex-col items-center justify-center text-center hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors relative">
         <input 
           type="file" 

@@ -50,8 +50,6 @@ export default function AdminIncidentTableRow({
           {incident.currentSituation || incident.other_info || "Not provided"}
         </p>
       </td>
-
-      {/* 🚨 UPDATED STATUS COLOR CODING */}
       <td className="px-6 py-4">
         <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold ${
           incident.status === 'Closed' 

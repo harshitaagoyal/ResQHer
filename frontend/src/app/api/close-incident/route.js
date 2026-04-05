@@ -4,18 +4,16 @@ import { ObjectId } from 'mongodb';
 
 export async function PATCH(req) {
   try {
-    // 🚨 CHANGED: Using formData instead of json to handle the image file
     const data = await req.formData();
     
     const id = data.get('id');
     const culpritName = data.get('culpritName');
     const culpritInfo = data.get('culpritInfo');
-    const culpritCaughtAt = data.get('culpritCaughtAt'); // 🚨 NEW Field
-    const pictureFile = data.get('culpritPicture');     // 🚨 NEW Field (File object)
+    const culpritCaughtAt = data.get('culpritCaughtAt'); 
+    const pictureFile = data.get('culpritPicture');    
 
     if (!id) return NextResponse.json({ error: "Missing ID" }, { status: 400 });
 
-    // 🚨 NEW: Convert Image File to Base64 String for MongoDB storage
     let base64Picture = null;
     if (pictureFile && pictureFile.size > 0) {
       const bytes = await pictureFile.arrayBuffer();
@@ -26,7 +24,6 @@ export async function PATCH(req) {
     const client = await clientPromise;
     const db = client.db("SheBuilds");
 
-    // Update the document with new fields
     const result = await db.collection("complains2").updateOne(
       { _id: new ObjectId(id) },
       { 
@@ -34,8 +31,8 @@ export async function PATCH(req) {
           status: "Closed",
           finalCulpritName: culpritName,
           finalCulpritInfo: culpritInfo,
-          finalCulpritCaughtAt: culpritCaughtAt ? new Date(culpritCaughtAt) : null, // 🚨 NEW
-          finalCulpritPicture: base64Picture, // 🚨 NEW (Stored as Base64)
+          finalCulpritCaughtAt: culpritCaughtAt ? new Date(culpritCaughtAt) : null, 
+          finalCulpritPicture: base64Picture,
           closedAt: new Date()
         } 
       }
@@ -45,7 +42,7 @@ export async function PATCH(req) {
       return NextResponse.json({ 
         success: true, 
         message: "Incident closed successfully",
-        finalCulpritPicture: base64Picture // Return it so frontend can update locally
+        finalCulpritPicture: base64Picture 
       });
     } else {
       return NextResponse.json({ error: "Incident not found" }, { status: 404 });

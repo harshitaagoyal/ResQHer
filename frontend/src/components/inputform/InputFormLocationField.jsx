@@ -36,7 +36,6 @@ export default function InputFormLocationField({ form, setDetectedCountry }) {
   return (
     <div className="p-4 bg-slate-50 dark:bg-slate-900/50 rounded-xl border-2 border-dashed border-slate-200 dark:border-slate-700">
       <FormLabel>Location Security</FormLabel>
-      {/* 🚨 CHANGED: flex-col for mobile, sm:flex-row for desktop */}
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 mt-2">
         <Input
           className="bg-white dark:bg-slate-950 dark:border-slate-800 text-sm w-full"
@@ -47,7 +46,6 @@ export default function InputFormLocationField({ form, setDetectedCountry }) {
           type="button"
           onClick={getUserLocation}
           variant="outline"
-          // 🚨 CHANGED: Added w-full sm:w-auto so the button spans the whole screen on mobile
           className="w-full sm:w-auto shrink-0 gap-2 border-pink-200 text-pink-700 hover:bg-pink-50 dark:border-pink-900/50 dark:text-pink-400 dark:hover:bg-pink-950/30 font-semibold transition-colors cursor-pointer"
         >
           <LocateIcon className="h-4 w-4" />

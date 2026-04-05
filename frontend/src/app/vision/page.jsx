@@ -6,25 +6,19 @@ export default function OurVision() {
   return (
     <div className="min-h-screen bg-white dark:bg-[#020617] text-slate-900 dark:text-white p-8">
       <div className="max-w-5xl mx-auto pt-8">
-        
-        {/* Main Title - Exact match to Privacy/Terms */}
         <h1 className="text-2xl font-bold text-slate-800 dark:text-white uppercase tracking-tight mb-4">
           Our Vision
         </h1>
-        
-        {/* Divider line */}
         <div className="w-10 h-1 bg-slate-800 dark:bg-slate-400 mb-10"></div>
 
         <div className="space-y-8">
           
-          {/* Hero Statement */}
           <section>
             <p className="text-[17px] font-bold text-slate-800 dark:text-slate-100 leading-relaxed mb-4">
               Engineering a world where technology is the ultimate equalizer for personal safety.
             </p>
           </section>
 
-          {/* Section 1 */}
           <section>
             <h2 className="text-[17px] font-bold text-slate-800 dark:text-white mb-4 uppercase">
               The Core Philosophy
@@ -34,7 +28,6 @@ export default function OurVision() {
             </p>
           </section>
 
-          {/* Section 2 */}
           <section>
             <h2 className="text-[17px] font-bold text-slate-800 dark:text-white mb-4 uppercase">
               Systems-Level Precision
@@ -44,7 +37,6 @@ export default function OurVision() {
             </p>
           </section>
 
-          {/* Section 3 */}
           <section>
             <h2 className="text-[17px] font-bold text-slate-800 dark:text-white mb-4 uppercase">
               Beyond the Browser
@@ -54,7 +46,6 @@ export default function OurVision() {
             </p>
           </section>
 
-          {/* Developer Sign-off in official style */}
           <section className="border-t border-slate-200 dark:border-slate-800 pt-8 mt-12">
             <p className="text-[15px] leading-relaxed text-slate-600 dark:text-slate-400">
               <span className="font-bold text-slate-800 dark:text-slate-200 uppercase tracking-widest text-[11px] block mb-1">Architected By</span>

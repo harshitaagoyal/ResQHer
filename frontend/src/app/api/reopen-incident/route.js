@@ -16,7 +16,6 @@ export async function PATCH(req) {
       { 
         $set: { 
           status: "Pending",
-          // We keep the finalCulprit info in the DB history but mark it active again
           reopenedAt: new Date() 
         } 
       }

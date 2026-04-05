@@ -12,14 +12,13 @@ export async function PATCH(req) {
     const client = await clientPromise;
     const db = client.db("SheBuilds");
 
-    // Update the document with new final culprit details
     const result = await db.collection("complains2").updateOne(
       { _id: new ObjectId(id) },
       { 
         $set: { 
           finalCulpritName: finalCulpritName,
           finalCulpritInfo: finalCulpritInfo,
-          lastEditedCulpritAt: new Date() // Tracks when details were updated
+          lastEditedCulpritAt: new Date() 
         } 
       }
     );
@@ -27,8 +26,6 @@ export async function PATCH(req) {
     if (result.matchedCount === 0) {
         return NextResponse.json({ error: "Incident not found" }, { status: 404 });
     }
-
-    // Success response, even if no fields were actually changed
     return NextResponse.json({ success: true, message: "Culprit details updated securely" });
 
   } catch (error) {

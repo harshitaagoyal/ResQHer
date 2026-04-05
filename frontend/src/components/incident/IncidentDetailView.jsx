@@ -24,7 +24,6 @@ export default function IncidentDetailView({ incident, onBack, onUpdate }) {
   const [isEditingCulpritInfo, setIsEditingCulpritInfo] = useState(false);
   const [isSavingCulpritEdit, setIsSavingCulpritEdit] = useState(false);
 
-  // --- REOPEN FUNCTION ---
   const handleReopen = async () => {
     const confirmed = window.confirm("Are you sure you want to reopen this case?");
     if (!confirmed) return;
@@ -48,8 +47,6 @@ export default function IncidentDetailView({ incident, onBack, onUpdate }) {
       alert("Something went wrong.");
     }
   };
-
-  // --- CLOSE ISSUE FUNCTION ---
   const handleCloseIssueSubmit = async (name, info, caughtAt, pictureFile) => {
     if (!name || !info || !caughtAt) return alert("Please fill in the Culprit Name, Information, and Caught Date.");
     
@@ -95,7 +92,6 @@ export default function IncidentDetailView({ incident, onBack, onUpdate }) {
     }
   };
 
-  // --- EDIT CULPRIT INFO FUNCTION ---
   const handleSaveCulpritEditSubmit = async (name, info, caughtAt, pictureFile) => {
     if (!name || !info) return alert("Culprit Name and Information cannot be empty.");
     setIsSavingCulpritEdit(true);
@@ -137,7 +133,6 @@ export default function IncidentDetailView({ incident, onBack, onUpdate }) {
   return (
     <div className="space-y-6 animate-in fade-in zoom-in-95 duration-300">
       
-      {/* 🚨 HEADER: onReopen is properly passed here */}
       <IncidentDetailHeader 
         incident={localIncident}
         onBack={onBack}
@@ -160,8 +155,6 @@ export default function IncidentDetailView({ incident, onBack, onUpdate }) {
               : "Time Unknown"}
           </p>
         </IncidentDataCard>
-
-        {/* Dynamic Contact Card */}
         <IncidentDataCard title="Preferred way of contact" icon={Phone} colSpan="col-span-1">
           <p className="text-xs text-slate-500 mb-3 italic">
             {localIncident.preferredContact?.length > 0 
@@ -263,8 +256,6 @@ export default function IncidentDetailView({ incident, onBack, onUpdate }) {
         onSubmit={handleCloseIssueSubmit}
         isSubmitting={isSubmittingClose}
       />
-
-      {/* 🚨 MODAL: onReopen removed from here, properly hooked up to edit data */}
       <IncidentCulpritInfoModal 
         isOpen={showCulpritInfoModal} 
         onClose={() => setShowCulpritInfoModal(false)}

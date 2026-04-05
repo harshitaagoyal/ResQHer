@@ -1,7 +1,5 @@
-// src/components/incident/IncidentCloseIssueModal.jsx
 'use client';
 import React, { useState, useRef } from 'react';
-// 🚨 NEW: Import Camera and X icons
 import { X, Loader2, Camera, CalendarClock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -10,7 +8,6 @@ import { Textarea } from '@/components/ui/textarea';
 export default function IncidentCloseIssueModal({ isOpen, onClose, onSubmit, isSubmitting }) {
   const [culpritName, setCulpritName] = useState('');
   const [culpritInfo, setCulpritInfo] = useState('');
-  // 🚨 NEW: State for Caught Date and Picture
   const [caughtAt, setCaughtAt] = useState(''); 
   const [culpritPicture, setCulpritPicture] = useState(null);
   const [picturePreview, setPicturePreview] = useState(null);
@@ -42,15 +39,12 @@ export default function IncidentCloseIssueModal({ isOpen, onClose, onSubmit, isS
       alert("Please provide the Culprit Name, Information, and the Date/Time they were caught.");
       return;
     }
-    // 🚨 UPDATED: Passing the new data back to the parent component
     onSubmit(culpritName, culpritInfo, caughtAt, culpritPicture);
   };
 
   return (
     <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in duration-300">
       <div className="bg-white dark:bg-slate-950 rounded-3xl shadow-2xl w-full max-w-xl border dark:border-slate-800 overflow-hidden" onClick={(e) => e.stopPropagation()}>
-        
-        {/* Header */}
         <div className="p-6 border-b dark:border-slate-800 flex items-start justify-between">
           <div>
             <h2 className="text-2xl font-black tracking-tight text-slate-900 dark:text-white">Close Issue & Finalize Case</h2>
@@ -58,8 +52,6 @@ export default function IncidentCloseIssueModal({ isOpen, onClose, onSubmit, isS
           </div>
           <button onClick={onClose} className="p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg"><X size={20} /></button>
         </div>
-
-        {/* Form */}
         <form onSubmit={handleFormSubmit}>
           <div className="p-6 space-y-5 max-h-[70vh] overflow-y-auto">
             
@@ -72,11 +64,7 @@ export default function IncidentCloseIssueModal({ isOpen, onClose, onSubmit, isS
               <label className="text-sm font-bold text-slate-900 dark:text-slate-100">Final Culprit Description/Info</label>
               <Textarea placeholder="Physical description, tattoos, known aliases, details of confrontation..." value={culpritInfo} onChange={(e) => setCulpritInfo(e.target.value)} className="min-h-[120px] dark:bg-slate-900" />
             </div>
-
-            {/* 🚨 NEW: Culprit Picture Upload and Caught Date Row */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5 pt-2 border-t dark:border-slate-800">
-              
-              {/* Picture Upload */}
               <div className="space-y-2">
                 <label className="text-sm font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2"><Camera size={16}/> Culprit Picture (Optional)</label>
                 {picturePreview ? (
@@ -93,7 +81,6 @@ export default function IncidentCloseIssueModal({ isOpen, onClose, onSubmit, isS
                 )}
               </div>
 
-              {/* Caught At Date/Time */}
               <div className="space-y-2 flex flex-col justify-end">
                 <label className="text-sm font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2"><CalendarClock size={16}/> Date & Time Caught</label>
                 <input 
@@ -106,8 +93,6 @@ export default function IncidentCloseIssueModal({ isOpen, onClose, onSubmit, isS
 
             </div>
           </div>
-
-          {/* Footer Actions */}
           <div className="p-6 bg-slate-50 dark:bg-slate-900/50 border-t dark:border-slate-800 flex items-center justify-end gap-3">
             <Button type="button" variant="ghost" onClick={onClose} disabled={isSubmitting}>Cancel</Button>
             <Button type="submit" disabled={isSubmitting} className="bg-pink-600 hover:bg-pink-700 text-white font-bold gap-2 rounded-xl">

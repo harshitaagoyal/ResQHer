@@ -23,8 +23,6 @@ export default function AlertButton() {
     }
 
     setIsAlerting(true);
-    
-    // 1. Get Location
     navigator.geolocation.getCurrentPosition(
       async (position) => {
         const { latitude, longitude } = position.coords;

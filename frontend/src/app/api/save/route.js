@@ -6,20 +6,17 @@ export async function POST(req) {
     const data = await req.json();
     const client = await clientPromise;
     const db = client.db("SheBuilds");
-
-    // 🚨 UPDATED: We are now explicitly mapping your new Zod form fields!
     const document = {
       name: data.name || "Anonymous",
       location: data.location || "Unknown",
       phone: data.phone || "",
-      email: data.email || "", // Captures email from Clerk
+      email: data.email || "", 
       
-      // These match your InputForm schema exactly:
       preferredContact: data.preferredContact || [], 
       frequency: data.frequency || "Not specified",
       occurrenceDuration: data.occurrenceDuration || "",
-      currentSituation: data.currentSituation || "", // The user's typed summary
-      ai_summary: data.current_situation || "", // The AI generated text from Share.jsx
+      currentSituation: data.currentSituation || "", 
+      ai_summary: data.current_situation || "",
       culprit: data.culprit || "",
       
       severity: data.severity || "High",

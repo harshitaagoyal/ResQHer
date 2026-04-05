@@ -16,8 +16,6 @@ import { Input } from '@/components/ui/input';
 import { Slider } from '@/components/ui/slider';
 import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
-
-// Import our new sub-components
 import InputFormLocationField from './InputFormLocationField';
 import InputFormEvidenceField from './InputFormEvidenceField';
 
@@ -84,8 +82,6 @@ export function InputForm() {
       setLoading(true);
       const dynamicSeverity = calculateSeverity(data.occurrenceDurationValue, data.occurrenceDurationUnit, data.currentSituation);
       const combinedDurationStr = `${data.occurrenceDurationValue} ${data.occurrenceDurationUnit}`;
-
-      // Native fetch approach from our previous fix
       const formDataToSubmit = new FormData();
       formDataToSubmit.append('name', data.name);
       formDataToSubmit.append('email', user?.primaryEmailAddress?.emailAddress || '');
@@ -162,7 +158,6 @@ export function InputForm() {
           )}
         />
 
-        {/* Reusable Location Field */}
         <InputFormLocationField form={form} setDetectedCountry={setDetectedCountry} />
 
         <FormField
@@ -171,7 +166,6 @@ export function InputForm() {
           render={({ field }) => (
             <FormItem>
               <FormLabel className="text-base font-semibold">Preferred Contact Method</FormLabel>
-              {/* 🚨 CHANGED: 1 column on mobile (grid-cols-1), 2 columns on desktop (sm:grid-cols-2) */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mt-2">
                 {contactMethods.map((method) => (
                   <div key={method} className="flex items-center space-x-2 border dark:border-slate-800 p-3 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
@@ -231,12 +225,10 @@ export function InputForm() {
                 <FormLabel>
                   Duration of Incidents: <span className="text-pink-600 dark:text-pink-500 font-bold ml-1">{field.value} {unit}</span>
                 </FormLabel>
-                {/* 🚨 CHANGED: Stacked on mobile (flex-col), side-by-side on desktop (sm:flex-row) */}
                 <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mt-2">
                   <FormControl className="flex-1 w-full pt-2 sm:pt-0">
                     <Slider value={[field.value]} min={1} max={maxVal} step={1} onValueChange={(val) => field.onChange(val[0])} />
                   </FormControl>
-                  {/* 🚨 CHANGED: Full width dropdown on mobile (w-full), fixed width on desktop (sm:w-32) */}
                   <select
                     className="w-full sm:w-32 px-3 py-2 rounded-md border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-sm outline-none focus:ring-2 focus:ring-pink-500 cursor-pointer"
                     value={unit}
@@ -282,8 +274,6 @@ export function InputForm() {
             </FormItem>
           )}
         />
-
-        {/* Reusable Evidence Field */}
         <InputFormEvidenceField attachments={attachments} setAttachments={setAttachments} />
 
         <Button

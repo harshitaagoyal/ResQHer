@@ -68,13 +68,10 @@ export default function AdminIncidentTable({ incidents, onViewDetails, onDeleteS
   };
 
   return (
-    // 🚨 ADDED: overflow-hidden so the rounded-xl corners don't get broken by the inner scrollbar on mobile
     <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm w-full overflow-hidden">
       
-      {/* This enables the horizontal swipe on mobile! */}
       <div className="overflow-x-auto w-full">
         
-        {/* min-w-[800px] keeps the columns wide enough to read */}
         <table className="w-full text-sm text-left min-w-[800px]">
           <thead className="bg-white dark:bg-slate-900 text-slate-500 border-b border-slate-200 dark:border-slate-800">
             <tr>

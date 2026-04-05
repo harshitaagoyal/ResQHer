@@ -8,11 +8,8 @@ export default function AdminFilters({
   showFilters, setShowFilters 
 }) {
   return (
-    // 🚨 CHANGED: Added w-full to ensure it spans the screen.
     <div className="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-4 w-full">
       
-      {/* Search Input */}
-      {/* 🚨 CHANGED: Removed fixed width for mobile, applied sm:w-96 for desktop */}
       <div className="relative w-full sm:w-96">
         <input 
           type="text" 
@@ -23,7 +20,6 @@ export default function AdminFilters({
         />
       </div>
 
-      {/* Filter Button & Dropdown */}
       <div className="relative">
         <button 
           onClick={() => setShowFilters(!showFilters)}

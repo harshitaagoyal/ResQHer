@@ -57,7 +57,6 @@ export default function NearbyHelpPage() {
     <div className="min-h-[calc(100vh-4rem)] bg-slate-50 dark:bg-[#020617] p-6 md:p-12 font-sans">
       <div className="max-w-4xl mx-auto space-y-8">
         
-        {/* Header */}
         <div className="text-center space-y-4">
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-pink-100 dark:bg-pink-900/30 text-pink-600 dark:text-pink-400 mb-2">
             <MapPin size={32} />

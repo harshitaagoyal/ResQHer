@@ -6,11 +6,10 @@ export async function GET() {
     const client = await clientPromise;
     const db = client.db("SheBuilds");
     
-    // Fetching from your original collection name "complains2"
     const incidents = await db
       .collection("complains2")
       .find({})
-      .sort({ _id: -1 }) // Get newest first
+      .sort({ _id: -1 })
       .toArray();
 
     return NextResponse.json(incidents);

@@ -16,7 +16,6 @@ export async function POST(request) {
     const severity = formData.get('severity');
     const status = formData.get('status') || 'Pending';
 
-    // Safely parse the contact array
     let preferredContact = [];
     try {
       const rawContact = formData.get('preferredContact');
@@ -25,18 +24,13 @@ export async function POST(request) {
       console.log("Failed to parse preferredContact");
     }
 
-    // 🚨 UPGRADED: BULLETPROOF FILE EXTRACTOR 🚨
     const attachmentsData = [];
     
-    // We loop through EVERY item in the formData manually
     for (const [key, value] of formData.entries()) {
       
-      // If it's named 'attachments' and it's a file (has an arrayBuffer function)
       if (key === 'attachments' && value && typeof value === 'object' && typeof value.arrayBuffer === 'function') {
         try {
           const bytes = await value.arrayBuffer();
-          
-          // Make sure the file actually contains data
           if (bytes.byteLength > 0) {
             const buffer = Buffer.from(bytes);
             const base64String = buffer.toString('base64');
@@ -44,7 +38,6 @@ export async function POST(request) {
             
             attachmentsData.push({
               name: value.name || 'evidence-file',
-              // This is the magic string that lets the browser render the image
               url: `data:${mimeType};base64,${base64String}` 
             });
           }
@@ -68,7 +61,7 @@ export async function POST(request) {
       culprit,
       severity,
       status,
-      attachments: attachmentsData, // 🚨 Now safely contains your encoded images!
+      attachments: attachmentsData, 
       createdAt: new Date(),
     };
 

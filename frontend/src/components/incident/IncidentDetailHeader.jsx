@@ -27,7 +27,6 @@ export default function IncidentDetailHeader({
       
       {incident.status === 'Closed' ? (
         <div className="flex items-center gap-2">
-          {/* Culprit Info Button */}
           <Button 
             variant="outline" 
             onClick={onOpenCulpritModal}
@@ -35,8 +34,6 @@ export default function IncidentDetailHeader({
           >
             Culprit Info
           </Button>
-
-          {/* Reopen Case Toggle Button */}
           <Button 
             onClick={onReopen} 
             className="bg-emerald-500 hover:bg-amber-500 text-white font-bold gap-2 transition-all group"

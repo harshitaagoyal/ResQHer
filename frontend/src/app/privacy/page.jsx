@@ -7,12 +7,9 @@ export default function PrivacyPolicy() {
     <div className="min-h-screen bg-white dark:bg-[#020617] text-slate-900 dark:text-white pb-24 px-6 md:px-12 lg:px-24">
       <div className="max-w-5xl mx-auto pt-8">
         
-        {/* Main Title - Standard Professional Size */}
         <h1 className="text-2xl font-bold text-slate-800 dark:text-white uppercase tracking-tight mb-4">
           Privacy Policy
         </h1>
-        
-        {/* Divider line like the image */}
         <div className="w-10 h-1 bg-slate-800 dark:bg-slate-400 mb-6"></div>
 
         <p className="text-[15px] text-slate-600 dark:text-slate-400 mb-10">
@@ -21,7 +18,6 @@ export default function PrivacyPolicy() {
 
         <div className="space-y-8">
           
-          {/* Section 1 */}
           <section>
             <h2 className="text-[17px] font-bold text-slate-800 dark:text-white mb-4">
               What Does This Privacy Policy Cover?
@@ -31,7 +27,6 @@ export default function PrivacyPolicy() {
             </p>
           </section>
 
-          {/* Section 2 */}
           <section>
             <h2 className="text-[17px] font-bold text-slate-800 dark:text-white mb-4">
               What Information Do We Collect?
@@ -59,7 +54,6 @@ export default function PrivacyPolicy() {
             </ul>
           </section>
 
-          {/* Section 3 - Uppercase Heading like image */}
           <section>
             <h2 className="text-[17px] font-bold text-slate-800 dark:text-white mb-4 uppercase">
               HOW WE USE YOUR INFORMATION?
@@ -76,7 +70,6 @@ export default function PrivacyPolicy() {
             </ul>
           </section>
 
-          {/* Section 4 */}
           <section>
             <h2 className="text-[17px] font-bold text-slate-800 dark:text-white mb-4">
               How Can I Update User Access or Deactivate my Account?
@@ -86,7 +79,6 @@ export default function PrivacyPolicy() {
             </p>
           </section>
 
-          {/* Section 5 */}
           <section>
             <h2 className="text-[17px] font-bold text-slate-800 dark:text-white mb-4">
               How we protect your information

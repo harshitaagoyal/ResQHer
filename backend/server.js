@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const mongoose = require("mongoose"); // Added for MERN stack
+const mongoose = require("mongoose"); 
 require("dotenv").config();
 
 const app = express();
@@ -12,22 +12,20 @@ app.use(express.urlencoded({ extended: true })); // Helps with form data
 app.use("/api/security", require("./routes/securityRoutes"));
 app.use("/api/knowledge", require("./routes/knowledgeRoutes"));
 // --- DATABASE CONNECTION ---
-// Ensure you have MONGO_URI in your .env file
+
 mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log("✅ MongoDB Connected: ResQHer Database Ready"))
-  .catch((err) => console.error("❌ MongoDB Connection Error:", err));
+  .then(() => console.log("MongoDB Connected: ResQHer Database Ready"))
+  .catch((err) => console.error("MongoDB Connection Error:", err));
 
 // --- ROUTES ---
 app.use("/api/ai", require("./routes/aiRoutes"));
 app.use("/api/chat", require("./routes/chatRoutes"));
-// app.use("/api/posts", require("./routes/postRoutes")); // For future community/X posts
 
 app.get("/", (req, res) => {
   res.status(200).send("ResQHer API is live and protecting.");
 });
 
 // --- GLOBAL ERROR HANDLER ---
-// This prevents the server from crashing and sends clean errors to the frontend
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({
@@ -40,5 +38,5 @@ app.use((err, req, res, next) => {
 // --- SERVER INITIALIZATION ---
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
+  console.log(`Server running on http://localhost:${PORT}`);
 });

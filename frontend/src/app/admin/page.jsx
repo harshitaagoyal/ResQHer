@@ -75,7 +75,6 @@ export default function AdminPage() {
     <div className="min-h-screen bg-[#f8fafc] dark:bg-[#020617] p-4 md:p-10 font-sans">
       <div className="max-w-7xl mx-auto space-y-6">
         
-        {/* 🚨 HEADER NOW STAYS VISIBLE FOR BOTH VIEWS */}
         <AdminHeader />
 
         {selectedIncident ? (

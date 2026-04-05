@@ -1,4 +1,3 @@
-// models/User.js
 const mongoose = require("mongoose");
 
 const UserSchema = new mongoose.Schema({
@@ -16,7 +15,7 @@ const UserSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: true // We will hash this later when we build Auth
+    required: true
   },
   emergencyContact: {
     name: String,

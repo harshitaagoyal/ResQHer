@@ -24,9 +24,9 @@ export async function POST(req) {
     // 2. Verify connection (Very Important!)
     try {
       await transporter.verify();
-      console.log("✅ Server is ready to take our messages");
+      console.log("Server is ready to take our messages");
     } catch (err) {
-      console.error("❌ Transporter Verify Error:", err);
+      console.error("Transporter Verify Error:", err);
       return NextResponse.json({ error: "Auth failed", details: err.message }, { status: 500 });
     }
 
@@ -51,11 +51,11 @@ export async function POST(req) {
       `,
     });
 
-    console.log("✉️ Message sent: %s", info.messageId);
+    console.log("Message sent: %s", info.messageId);
     return NextResponse.json({ success: true }, { status: 200 });
 
   } catch (error) {
-    console.error("❌ Final Catch Error:", error);
+    console.error("Final Catch Error:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

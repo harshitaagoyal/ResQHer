@@ -45,15 +45,9 @@ export default function Footer() {
   ];
 
   return (
-    // 🚨 CHANGED: Reduced top padding on mobile (pt-10) vs desktop (md:pt-16)
     <footer className="bg-white dark:bg-[#020617] border-t border-slate-100 dark:border-slate-800 pt-10 md:pt-16 pb-8">
-      {/* 🚨 CHANGED: Adjusted horizontal padding for mobile (px-6) vs desktop (md:px-8) */}
       <div className="max-w-7xl mx-auto px-6 md:px-8">
-        
-        {/* The Grid: This was already perfectly responsive! */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-12 mb-12 md:mb-16">
-          
-          {/* Brand & Socials */}
           <div className="space-y-4 md:space-y-6">
             <Link href="/" className="text-3xl font-black tracking-tighter text-slate-900 dark:text-white">
               ResQ<span className="text-[#ed0b70]">Her</span>
@@ -68,12 +62,8 @@ export default function Footer() {
               <FooterSocialIcon icon={Share2} onClick={handleShare} isCopied={copied} />
             </div>
           </div>
-
-          {/* Links */}
           <FooterLinkGroup title="Platform" links={platformLinks} />
           <FooterLinkGroup title="Resources" links={resourceLinks} />
-
-          {/* Contact Details */}
           <div>
             <h4 className="text-base md:text-lg font-black text-slate-900 dark:text-white mb-4 md:mb-6 uppercase tracking-wider">Contact</h4>
             <ul className="space-y-3 md:space-y-4">
@@ -91,8 +81,6 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Bottom Bar */}
-        {/* 🚨 CHANGED: Adjusted to flex-col for mobile, flex-row for desktop, and centered text */}
         <div className="pt-6 md:pt-8 border-t border-slate-100 dark:border-slate-800 flex flex-col md:flex-row justify-between items-center gap-4 text-center">
           <p className="text-slate-400 font-bold text-xs md:text-sm">
             © {currentYear} <span className="text-slate-900 dark:text-white font-black">ResQHer</span>. All rights reserved.

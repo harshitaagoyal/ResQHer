@@ -17,7 +17,6 @@ export async function GET() {
       .sort({ updatedAt: -1 })
       .toArray();
 
-    // FIX: convert _id ObjectId to plain string so it works correctly in URLs
     const serialized = chats.map((c) => ({
       ...c,
       _id: c._id.toString(),

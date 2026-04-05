@@ -9,8 +9,6 @@ export default function FakeCallScreen({
   onEnd 
 }) {
   const [callDuration, setCallDuration] = useState(0);
-
-  // 1. Attempt to go full screen as soon as it rings (May be blocked by browser until clicked)
   useEffect(() => {
     const enterFullScreen = async () => {
       try {
@@ -22,8 +20,6 @@ export default function FakeCallScreen({
       }
     };
     enterFullScreen();
-
-    // Cleanup: Exit fullscreen when component is closed
     return () => {
       if (document.fullscreenElement) {
         document.exitFullscreen().catch(() => {});
@@ -31,7 +27,6 @@ export default function FakeCallScreen({
     };
   }, []);
 
-  // 2. Timer Effect
   useEffect(() => {
     let intervalId;
     if (status === 'answered') {
@@ -50,8 +45,6 @@ export default function FakeCallScreen({
     const seconds = totalSeconds % 60;
     return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
   };
-
-  // 3. Guaranteed Fullscreen on "Accept" click
   const handleAcceptClick = async () => {
     try {
       if (!document.fullscreenElement && document.documentElement.requestFullscreen) {
@@ -60,10 +53,9 @@ export default function FakeCallScreen({
     } catch (err) {
       console.log(err);
     }
-    onAccept(); // Trigger parent function
+    onAccept();
   };
 
-  // 4. Guaranteed Exit Fullscreen on "End" click
   const handleEndClick = async () => {
     try {
       if (document.fullscreenElement) {
@@ -72,11 +64,10 @@ export default function FakeCallScreen({
     } catch (err) {
       console.log(err);
     }
-    onEnd(); // Trigger parent function
+    onEnd(); 
   };
 
   return (
-    // Replaced h-[100dvh] w-screen with h-full w-full to prevent any scrollbars
     <div className="fixed inset-0 z-[9999] h-full w-full bg-[#0f172a] text-white flex flex-col items-center justify-between py-16 px-4 sm:py-24 sm:px-8 animate-in slide-in-from-bottom-full duration-500 overflow-hidden">
       
       <div className="text-center space-y-4 mt-16 sm:mt-12 w-full">
@@ -100,7 +91,6 @@ export default function FakeCallScreen({
               <span className="text-lg tracking-wide">Decline</span>
             </button>
             
-            {/* 🚨 Uses new handleAcceptClick to force fullscreen */}
             <button onClick={handleAcceptClick} className="cursor-pointer flex flex-col items-center gap-3 group">
               <div className="w-20 h-20 rounded-full bg-green-500 flex items-center justify-center shadow-[0_0_30px_rgba(34,197,94,0.3)] animate-[bounce_2s_infinite] group-hover:scale-105 transition-transform active:scale-95">
                 <Phone size={36} className="text-white fill-current" />
@@ -110,7 +100,6 @@ export default function FakeCallScreen({
           </>
         ) : (
           <div className="w-full flex justify-center">
-            {/* 🚨 Uses new handleEndClick to exit fullscreen */}
             <button onClick={handleEndClick} className="cursor-pointer flex flex-col items-center gap-3 group">
               <div className="w-20 h-20 rounded-full bg-red-500 flex items-center justify-center shadow-[0_0_30px_rgba(239,68,68,0.3)] group-hover:scale-105 transition-transform active:scale-95">
                 <PhoneOff size={36} className="text-white fill-current" />

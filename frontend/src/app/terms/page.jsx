@@ -6,18 +6,13 @@ export default function TermsOfService() {
   return (
     <div className="min-h-screen bg-white dark:bg-[#020617] text-slate-900 dark:text-white pb-24 px-6 md:px-12 lg:px-24">
       <div className="max-w-5xl mx-auto pt-8">
-        
-        {/* Main Title - Matching Privacy Style */}
         <h1 className="text-2xl font-bold text-slate-800 dark:text-white uppercase tracking-tight mb-4">
           Terms & Conditions
         </h1>
-        
-        {/* Divider line */}
         <div className="w-10 h-1 bg-slate-800 dark:bg-slate-400 mb-10"></div>
 
         <div className="space-y-8">
           
-          {/* Introduction Section */}
           <section className="text-[15px] leading-relaxed text-slate-600 dark:text-slate-300 space-y-4">
             <p>
               <span className="font-bold text-slate-800 dark:text-white">ResQHer</span> is a brand developed for women's safety. ResQHer provides this web site (THE “SITE”) to you subject to these terms and conditions of use (THESE “SITE TERMS”). Please read these site terms carefully before using this web site.
@@ -30,7 +25,6 @@ export default function TermsOfService() {
             </p>
           </section>
 
-          {/* Privacy Link Section */}
           <section>
             <h2 className="text-[17px] font-bold text-slate-800 dark:text-white mb-2">
               Privacy Policy
@@ -39,8 +33,6 @@ export default function TermsOfService() {
               Please refer to the <span className="text-blue-600 dark:text-blue-400 underline">ResQHer Privacy Policy</span> for information on how we collect, use and disclose personally identifiable information from our users.
             </p>
           </section>
-
-          {/* Ownership Section */}
           <section>
             <h2 className="text-[17px] font-bold text-slate-800 dark:text-white mb-4">
               Ownership and Copyright
@@ -49,8 +41,6 @@ export default function TermsOfService() {
               Except as otherwise indicated, the name ResQHer, the Site, and all text, images, marks, logos and other content contained herein, including, without limitation, the ResQHer logo and all designs, text, graphics, pictures, information, data, software, and the selection and arrangement thereof (collectively, the “Site Content”) are the proprietary property of the developer, and may not be copied, imitated or used, in whole or in part, without prior written permission.
             </p>
           </section>
-
-          {/* Limited License Section */}
           <section>
             <h2 className="text-[17px] font-bold text-slate-800 dark:text-white mb-4">
               Limited License
@@ -66,8 +56,6 @@ export default function TermsOfService() {
               <li>You may not use the Site or the Site Content other than for its intended purpose.</li>
             </ul>
           </section>
-
-          {/* Hyperlinks Section */}
           <section>
             <h2 className="text-[17px] font-bold text-slate-800 dark:text-white mb-4">
               Hyperlinks
@@ -76,8 +64,6 @@ export default function TermsOfService() {
               You are granted a limited, non-exclusive right to create a text hyperlink to the Site for non-commercial purposes, provided such link does not portray ResQHer or any of its products or services in a false, misleading, derogatory or otherwise defamatory manner. ResQHer may revoke this limited right at any time. You may not use a ResQHer logo or other proprietary graphic to link to the Site without express written permission.
             </p>
           </section>
-
-          {/* AI Bot Disclaimer (Extra Professional Touch) */}
           <section className="border-t border-slate-100 dark:border-slate-800 pt-8 italic text-slate-500 dark:text-slate-400 text-sm">
             <p>
               Note: This website is a portfolio project. The "Law Bot" and "Therapy Bot" mentioned throughout the platform are AI-based conceptual tools and should not be used as a replacement for professional or legal advice.

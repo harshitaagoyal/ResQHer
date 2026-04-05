@@ -1,15 +1,4 @@
 const aiService = require("../services/aiService");
-
-/**
- *  Main Chat Controller for ResQHer
- * Handles real-time empathetic support, legal awareness, and safety advice.
- * * Expected Request Body:
- * {
- * "message": "User's text input",
- * "history": [], // Optional array of previous messages
- * "mode": "law" | "therapy" | "general" // Optional mode to switch AI personality
- * }
- */
 exports.chat = async (req, res) => {
   try {
     const { message, history, mode } = req.body;
@@ -26,10 +15,7 @@ exports.chat = async (req, res) => {
     const activeMode = mode || "general";
     console.log(`[Chat] Mode: ${activeMode} | Message: ${message}`);
 
-    /** * 3. Call the Chat Service
-     * We pass the message, the conversation history, and the specific mode.
-     * The service will use the prompts from prompts.js based on this mode.
-     */
+    //3. Call the Chat Service
     const reply = await aiService.getChatResponse(
       message, 
       history || [], 

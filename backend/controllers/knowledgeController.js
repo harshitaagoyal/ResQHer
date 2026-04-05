@@ -1,13 +1,8 @@
-// controllers/knowledgeController.js
 const fs = require("fs");
 const path = require("path");
 const mongoose = require("mongoose");
 const { generateTextEmbedding } = require("../utils/embedding");
 
-/**
- *  Read local documents and upload their embeddings to MongoDB
- * (Translates: /upload_embeddings)
- */
 exports.uploadEmbeddings = async (req, res) => {
   try {
     const docsDir = path.join(__dirname, "../../docs"); // Assuming 'docs' is at root level
@@ -20,18 +15,15 @@ exports.uploadEmbeddings = async (req, res) => {
     for (const filename of files) {
       const filePath = path.join(docsDir, filename);
       
-      // Read file content (Translates your common.py logic)
       if (fs.statSync(filePath).isFile() && filename.endsWith(".txt")) {
         const content = fs.readFileSync(filePath, "utf-8");
         
-        // Generate Vector Embedding
         const embedding = await generateTextEmbedding(content);
 
-        // Save to Database natively (NO Python Pickle!)
         await collection.insertOne({
           filename: filename,
-          embedding: embedding, // Stored natively as an array of floats
-          content: content.substring(0, 500), // Store first 500 chars as preview
+          embedding: embedding,
+          content: content.substring(0, 500), 
           uploadedAt: new Date()
         });
         
@@ -46,13 +38,9 @@ exports.uploadEmbeddings = async (req, res) => {
   }
 };
 
-/**
- * Find matches using MongoDB Atlas Vector Search
- * (Translates: /find-match)
- */
 exports.findMatch = async (req, res) => {
   try {
-    const { info, collectionName } = req.body; // Pass the text to search for, and the collection
+    const { info, collectionName } = req.body;
 
     if (!info || !collectionName) {
       return res.status(400).json({ error: "Missing 'info' text or 'collectionName'" });
@@ -71,7 +59,7 @@ exports.findMatch = async (req, res) => {
           index: collectionName === "complains2" ? "culpritIndex2" : "docIndex", // Must match your Atlas Index name
           queryVector: descriptionEmbedding,
           numCandidates: 100,
-          limit: 1, // num_results = 1
+          limit: 1, 
         }
       },
       {
@@ -80,7 +68,7 @@ exports.findMatch = async (req, res) => {
           filename: 1,
           content: 1,
           culprit: 1,
-          score: { $meta: "vectorSearchScore" } // Gets the similarity score natively
+          score: { $meta: "vectorSearchScore" } 
         }
       }
     ]).toArray();

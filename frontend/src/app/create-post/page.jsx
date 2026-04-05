@@ -3,7 +3,7 @@
 import React from 'react';
 import { useUser } from '@clerk/nextjs';
 import { InputForm } from '@/components/inputform/InputForm';
-import { HeartPulse } from 'lucide-react'; // Swapped icon to match the pink theme
+import { HeartPulse } from 'lucide-react';
 
 export default function CreatePostPage() {
   const { user, isLoaded } = useUser();
@@ -25,7 +25,6 @@ export default function CreatePostPage() {
     <div className="min-h-screen bg-slate-50 dark:bg-[#020617] py-12 transition-colors duration-300">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Updated Header with Pink Accents */}
         <div className="mb-12 flex flex-col items-center text-center">
           <div className="inline-flex items-center justify-center p-2 mb-4 rounded-full bg-pink-50 dark:bg-pink-900/20 border border-pink-100 dark:border-pink-800/30">
              <HeartPulse className="w-5 h-5 text-pink-600 dark:text-pink-400 mr-2" />
@@ -38,15 +37,12 @@ export default function CreatePostPage() {
             Report an <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-600 to-rose-500 dark:from-pink-400 dark:to-rose-300">Incident</span>
           </h1>
           
-          {/* Pink Accent Line */}
           <div className="h-1.5 w-20 bg-pink-600 dark:bg-pink-500 rounded-full mb-6"></div>
 
           <p className="max-w-xl text-lg text-slate-600 dark:text-slate-400 leading-relaxed">
             Your safety is our priority. Your report is encrypted and handled with the utmost care and confidentiality.
           </p>
         </div>
-
-        {/* The Form Container with subtle pink glow */}
         <div className="bg-white dark:bg-slate-900 p-6 md:p-10 rounded-[2.5rem] shadow-xl shadow-pink-500/5 border border-slate-200 dark:border-slate-800">
           <InputForm />
         </div>

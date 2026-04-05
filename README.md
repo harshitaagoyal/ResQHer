@@ -1,6 +1,5 @@
 **ResQHer: Engineering a Safer Future for Women**
 
-Websit is live at : 
 
 **The Vision:**
 
